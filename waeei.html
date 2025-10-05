@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>واعي - من نحن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Amiri', serif;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #b7c0c2;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #000;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            background: #b7c0c2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .menu {
+            display: flex;
+            gap: 50px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .menu div {
+            position: relative;
+            font-size: 18px;
+            cursor: pointer;
+            padding-bottom: 5px;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .menu div:hover {
+            color: #007b7f;
+        }
+
+        .menu div::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: #007b7f;
+            transition: width 0.3s ease;
+        }
+
+        .menu div:hover::after {
+            width: 100%;
+        }
+
+        .lang-switch {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #007b7f;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background-color: rgba(0, 123, 127, 0.1);
+        }
+
+        .lang-switch img {
+            height: 24px;
+            width: 24px;
+        } 
+
+        .lang-wrap {
+            display: flex;
+            align-items: center;
+        }
+
+        .page-content {
+            background: linear-gradient(135deg, #ECF7F7 0%, #9BBFC0 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 60px 20px;
+            min-height: calc(100vh - 120px);
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-box {
+            background: linear-gradient(135deg, #9BBFC0 0%, #A9A9A9 100%);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 350px;
+            color: #2F4F4F;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #2F4F4F;
+        }
+        
+        .feature-content {
+            font-size: 1.3rem;
+            text-align: center;
+            line-height: 1.6;
+            color: #2F4F4F;
+            font-weight: 700;
+        }
+        
+        .main-content {
+            background-color: transparent;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .main-text {
+            font-size: 1.4rem;
+            line-height: 1.9;
+            color: #2c3e50;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            font-weight: 700;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            font-weight: 700;
+            background: #b7c0c2;
+            border-top: 2px solid #007b7f;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+            
+            .logo {
+                margin: 0 auto;
+            }
+            
+            .logo img {
+                height: 50px;
+            }
+            
+            .menu {
+                flex-direction: column;
+                gap: 15px;
+                margin: 15px 0;
+                text-align: center;
+            }
+            
+            .lang-wrap {
+                margin: 0 auto;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .feature-box {
+                max-width: 100%;
+                padding: 25px;
+            }
+            
+            .main-text {
+                font-size: 1.2rem;
+            }
+            
+            .page-content {
+                padding: 40px 15px;
+            }
+            
+            .feature-title {
+                font-size: 1.5rem;
+            }
+            
+            .feature-content {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <!-- شعار واعي -->
+            <img src="logo-Waaie.png" alt="شعار واعي" onerror="this.style.display='none'">
+        </div>
+        
+        <nav class="menu">
+            <div>الصفحة الرئيسية</div>
+            <div>كشف الأحتيال</div>
+            <div>الأحصائيات المتداولة</div>
+            <div>الأرقام الرسمية</div>
+            <div>من نحن</div>
+        </nav>
+        
+        <div class="lang-wrap">
+            <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة">
+                <!-- صورة الترجمة -->
+                <img id="lang-icon" src="translation-icon.png" alt="رمز الترجمة" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' width=\'24\' height=\'24\'><path fill=\'%23007b7f\' d=\'M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z\'/></svg>'">
+                <span id="lang-text">English</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <section class="features">
+            <div class="feature-box">
+                <div class="feature-title" id="feature-title-1">أمان ذكي</div>
+                <div class="feature-content" id="feature-content-1">منصة واعي تكشف الاحتيال لحظيًا باستخدام أقوى تقنيات الذكاء الاصطناعي</div>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-title" id="feature-title-2">تجربة سهلة</div>
+                <div class="feature-content" id="feature-content-2">واجهة بسيطة، خطوات سريعة، وحماية شاملة للجميع</div>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-title" id="feature-title-3">أمان ذكي</div>
+                <div class="feature-content" id="feature-content-3">منصة واعي تكشف الاحتيال لحظيًا باستخدام أقوى تقنيات الذكاء الاصطناعي</div>
+            </div>
+        </section>
+        
+        <section class="main-content">
+            <div class="main-text" id="main-text">
+                واعي الذكي بيكون معك خطوة بخطوة عشان يكشف لك المحتالين، ويحلل الرسائل الأرقام، والصور عشان يحميك من أي خداع رقمي. كل هذا مدعوم بأقوى تقنيات الذكاء الاصطناعي، يعني حماية ذكية وعلى أعلى مستوى 
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        © 2025 واعي - جميع الحقوق محفوظة
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let current = 'ar';
+
+            const translations = {
+                ar: {
+                    nav: ['الصفحة الرئيسية', 'كشف الاحتيال', 'الإحصاءات المتداولة', 'الأرقام الرسمية', 'من نحن'],
+                    featureTitles: ['أمان ذكي', 'تجربة سهلة', 'أمان ذكي'],
+                    featureContents: [
+                        'منصة واعي تكشف الاحتيال لحظيًا باستخدام أقوى تقنيات الذكاء الاصطناعي',
+                        'واجهة بسيطة، خطوات سريعة، وحماية شاملة للجميع',
+                        'منصة واعي تكشف الاحتيال لحظيًا باستخدام أقوى تقنيات الذكاء الاصطناعي'
+                    ],
+                    mainText: 'واعي الذكي بيكون معك خطوة بخطوة عشان يكشف لك المحتالين، ويحلل الرسائل الأرقام، والصور عشان يحميك من أي خداع رقمي. كل هذا مدعوم بأقوى تقنيات الذكاء الاصطناعي، يعني حماية ذكية وعلى أعلى مستوى',
+                    footer: '©️ 2025 جميع الحقوق محفوظة لموقع واعي',
+                    switchLabel: 'English',
+                    dir: 'rtl',
+                    htmlLang: 'ar'
+                },
+                en: {
+                    nav: ['Home', 'Fraud Detection', 'Statistics', 'Official Numbers', 'About Us'],
+                    featureTitles: ['Smart Security', 'Easy Experience', 'Smart Security'],
+                    featureContents: [
+                        'Waeei platform detects fraud instantly using the most powerful AI technologies',
+                        'Simple interface, quick steps, and comprehensive protection for everyone',
+                        'Waeei platform detects fraud instantly using the most powerful AI technologies'
+                    ],
+                    mainText: 'Waeei AI will be with you step by step to detect fraudsters, analyze messages, numbers, and images to protect you from any digital scams. All powered by the most powerful artificial intelligence technologies, meaning smart protection at the highest level.',
+                    footer: '©️ 2025 All Rights Reserved for Waeei',
+                    switchLabel: 'Arabic',
+                    dir: 'ltr',
+                    htmlLang: 'en'
+                }
+            };
+
+            const navItems = document.querySelectorAll('.menu > div');
+            const langBtn = document.getElementById('lang-switch-btn');
+            const langText = document.getElementById('lang-text');
+            const footerEl = document.getElementById('footer');
+            
+            const featureTitle1 = document.getElementById('feature-title-1');
+            const featureContent1 = document.getElementById('feature-content-1');
+            const featureTitle2 = document.getElementById('feature-title-2');
+            const featureContent2 = document.getElementById('feature-content-2');
+            const featureTitle3 = document.getElementById('feature-title-3');
+            const featureContent3 = document.getElementById('feature-content-3');
+            const mainTextEl = document.getElementById('main-text');
+
+            function updateUI(lang) {
+                const t = translations[lang];
+                
+                navItems.forEach((el, i) => { 
+                    if (t.nav[i]) {
+                        el.textContent = t.nav[i]; 
+                    }
+                });
+                
+                featureTitle1.textContent = t.featureTitles[0];
+                featureContent1.textContent = t.featureContents[0];
+                featureTitle2.textContent = t.featureTitles[1];
+                featureContent2.textContent = t.featureContents[1];
+                featureTitle3.textContent = t.featureTitles[2];
+                featureContent3.textContent = t.featureContents[2];
+                
+                mainTextEl.textContent = t.mainText;
+                langText.textContent = t.switchLabel;
+                footerEl.textContent = t.footer;
+
+                document.documentElement.lang = t.htmlLang;
+                document.body.dir = t.dir;
+                current = lang;
+            }
+
+            langBtn.addEventListener('click', function () {
+                updateUI(current === 'ar' ? 'en' : 'ar');
+            });
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    console.log('النقر على: ' + this.textContent);
+                });
+            });
+
+            updateUI(current);
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+

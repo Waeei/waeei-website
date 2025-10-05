@@ -1,0 +1,266 @@
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Waaie</title>
+
+    <style>
+    body {
+      margin: 0;
+      font-family: 'Amiri', serif;
+      text-align: center;
+      color: #000000;
+      direction: rtl;
+      background-image: url("main backgrund.gif"); 
+      background-size: cover;        
+      background-position: center;   
+      background-repeat: no-repeat;
+      
+    }
+
+    header {
+    
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+    }
+
+
+
+    .menu {
+        display: flex;
+        gap: 80px; 
+                 
+    }
+
+    .menu div {
+        position: relative;
+        font-size: 18px;
+        cursor: pointer;
+        padding-bottom: 5px; 
+    }
+
+
+    .menu div::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #007b7f; 
+    }
+
+
+    
+
+    .logo img {
+      height: 77px;
+    }
+
+    .mainLogo {
+      height: 200px;
+      width: 400px;       
+      margin-bottom: 20px; 
+    }
+
+    .lang-switch {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #007b7f;
+    }
+
+    .lang-switch img {
+      height: 40px;
+    } 
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #303b42;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto 25px auto;
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #124447;
+      color: #fff;
+      padding: 12px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #007b7f;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    #main-title, #main-desc {
+         white-space: pre-line;
+    }
+  </style>
+
+
+</head>
+<body>
+      
+  <header>
+        
+          
+       
+
+      <div class="logo">
+          <img src="logo Waaie.png" alt="Waeei Logo">
+      </div>
+        
+      <nav class="menu">
+        <div>الصفحة الرئيسية</div>
+        <div>كشف الأحتيال</div>
+        <div>الأحصائيات المتداولة</div>
+        <div>الأرقام الرسمية</div>
+        <div> من نحن</div>
+      </nav>
+
+      <div class="lang-wrap" >
+        <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة" >
+        <img id="lang-icon" src="lang.png" alt="lang icon">
+
+        <span id="lang-text">English</span>
+        </button>
+      </div>
+        
+        
+         
+  </header>
+
+  <img class="mainLogo" src="logo Waaie.png" alt="Waeei Logo">
+  <main>
+        <h1 id="title">شاك في الرابط الي وصلك ومتردد تفتحه؟
+            لا تشيل هم ،موقعنا واعي جاب لك الحل!  
+           تعال شيك عليه بالذكاء الاصطناعي قبل لا تتهور.
+            “خلك واعي”  ولا تخاطر!</h1>
+
+        <p id="desc">واعي الذكي بيكون معك خطوة بخطوة عشان يكشف لك المحتالين، ويحلل الرسائل ،الأرقام،والصور عشان يحميك من أي خداع رقمي.
+            كل هذا مدعوم بأقوى تقنيات الذكاء الاصطناعي، يعني حماية ذكية وعلى أعلى مستوى</p>
+
+        <div class="buttons">
+            <a href="#" class="btn" id="btn1">جرب الان</a>
+            <a href="#" class="btn" id="btn2">تواصل معنا</a>
+        </div>
+
+  </main>
+
+  <footer id="footer">
+        ©️ 2025 جميع الحقوق محفوظة لموقع واعي
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let current = 'ar';
+
+      const translations = {
+        ar: {
+          title: `شاك في الرابط الي وصلك ومتردد تفتحه؟
+               لا تشيل هم ،موقعنا واعي جاب لك الحل!  
+               تعال شيك عليه بالذكاء الاصطناعي قبل لا تتهور.
+               "خلك واعي”  ولا تخاطر!`,
+          desc: `واعي الذكي بيكون معك خطوة بخطوة عشان يكشف لك المحتالين،
+            ويحلل الرسائل ،الأرقام،والصور عشان يحميك من أي خداع رقمي.
+           كل هذا مدعوم بأقوى تقنيات الذكاء الاصطناعي، يعني حماية ذكية وعلى أعلى مستوى`,
+          btn1: 'جرب الآن',
+          btn2: 'تواصل معنا',
+          nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصاءات المتداولة','من نحن'],
+          icon: 'lang.png',
+          switchLabel: 'English',
+          footer: '©️ 2025 جميع الحقوق محفوظة لموقع واعي',
+          dir: 'rtl',
+          htmlLang: 'ar'
+        },
+        en: {
+          title: `?Suspicious about a link you received
+             !No worries, Waeei has the solution  
+             .Check it with AI before you take risks
+            !Stay Aware” and don’t gamble with safety"`,
+          desc: `Waeei AI will be with you step by step to detect fraudsters,
+           analyze messages, numbers, and images to protect you from any digital scams.
+           All powered by advanced Artificial Intelligence for maximum smart protection.`,
+          btn1: 'Try Now',
+          btn2: 'Contact Us',
+          nav: ['Home','Fraud Check','main','Statistics','About'],
+          icon: 'lang.png',
+          switchLabel: 'Arabic',
+          footer: '©️ 2025 All Rights Reserved for Waeei',
+          dir: 'ltr',
+          htmlLang: 'en'
+        }
+      };
+
+      const titleEl = document.getElementById('title');
+      const descEl = document.getElementById('desc');
+      const btn1 = document.getElementById('btn1');
+      const btn2 = document.getElementById('btn2');
+      const langBtn = document.getElementById('lang-switch-btn');
+      const langIcon = document.getElementById('lang-icon');
+      const langText = document.getElementById('lang-text');
+      const navItems = document.querySelectorAll('nav > div');
+      const footerEl = document.getElementById('footer');
+
+      function updateUI(lang) {
+        const t = translations[lang];
+        titleEl.textContent = t.title;
+        descEl.textContent = t.desc;
+        btn1.textContent = t.btn1;
+        btn2.textContent = t.btn2;
+        navItems.forEach((el, i) => { el.textContent = t.nav[i] || ''; });
+        langIcon.src = t.icon;
+        langText.textContent = t.switchLabel;
+        footerEl.textContent = t.footer;
+
+        document.documentElement.lang = t.htmlLang;
+        document.body.dir = t.dir;
+        current = lang;
+      }
+
+      langBtn.addEventListener('click', function () {
+        updateUI(current === 'ar' ? 'en' : 'ar');
+      });
+
+      updateUI(current);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+

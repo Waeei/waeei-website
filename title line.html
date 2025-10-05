@@ -1,0 +1,175 @@
+<html>
+    <head>
+    <style>
+ body {
+  font-family: Arial, sans-serif;
+  background: #b7c0c2;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: #000;
+  text-align: center;
+  /*
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  
+  display: flex;
+  flex-direction: column;*/
+}
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 15px 40px;
+}
+
+
+
+.logo {
+  margin-left: auto;
+}
+
+
+.menu {
+  display: flex;
+  gap: 60px;
+  margin: 0 auto;
+  justify-content: center;
+
+}
+
+.menu div {
+  position: relative;
+  font-size: 18px;
+  cursor: pointer;
+  padding-bottom: 5px; 
+  }
+
+
+.menu div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007b7f; 
+}
+
+
+.logo img {
+  height: 77px;
+  
+}
+
+.lang-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #007b7f;
+}
+
+.lang-switch img {
+  height: 40px;
+} 
+
+.lang-wrap {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
+  </style>
+    </head>
+<body>
+    
+ 
+
+
+
+
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let current = 'ar';
+
+      const translations = {
+        ar: {
+          title: `شاك في الرابط الي وصلك ومتردد تفتحه؟
+               لا تشيل هم ،موقعنا واعي جاب لك الحل!  
+               تعال شيك عليه بالذكاء الاصطناعي قبل لا تتهور.
+               "خلك واعي”  ولا تخاطر!`,
+          desc: `واعي الذكي بيكون معك خطوة بخطوة عشان يكشف لك المحتالين،
+            ويحلل الرسائل ،الأرقام،والصور عشان يحميك من أي خداع رقمي.
+           كل هذا مدعوم بأقوى تقنيات الذكاء الاصطناعي، يعني حماية ذكية وعلى أعلى مستوى`,
+          btn1: 'جرب الآن',
+          btn2: 'تواصل معنا',
+          nav: ['الصفحة الرئيسية','كشف الاحتيال','الأرقام الرسمية','الإحصاءات المتداولة','من نحن'],
+          icon: 'lang.png',
+          switchLabel: 'English',
+          footer: '©️ 2025 جميع الحقوق محفوظة لموقع واعي',
+          dir: 'rtl',
+          htmlLang: 'ar'
+        },
+        en: {
+          title: `?Suspicious about a link you received
+             !No worries, Waeei has the solution  
+             .Check it with AI before you take risks
+            !Stay Aware” and don’t gamble with safety"`,
+          desc: `Waeei AI will be with you step by step to detect fraudsters,
+           analyze messages, numbers, and images to protect you from any digital scams.
+           All powered by advanced Artificial Intelligence for maximum smart protection.`,
+          btn1: 'Try Now',
+          btn2: 'Contact Us',
+          nav: ['Home','Fraud Check','Official figures','Statistics','About'],
+          icon: 'lang.png',
+          switchLabel: 'Arabic',
+          footer: '©️ 2025 All Rights Reserved for Waeei',
+          dir: 'ltr',
+          htmlLang: 'en'
+        }
+      };
+
+      const titleEl = document.getElementById('title');
+      const descEl = document.getElementById('desc');
+      const btn1 = document.getElementById('btn1');
+      const btn2 = document.getElementById('btn2');
+      const langBtn = document.getElementById('lang-switch-btn');
+      const langIcon = document.getElementById('lang-icon');
+      const langText = document.getElementById('lang-text');
+      const navItems = document.querySelectorAll('nav > div');
+      const footerEl = document.getElementById('footer');
+
+      function updateUI(lang) {
+        const t = translations[lang];
+        titleEl.textContent = t.title;
+        descEl.textContent = t.desc;
+        btn1.textContent = t.btn1;
+        btn2.textContent = t.btn2;
+        navItems.forEach((el, i) => { el.textContent = t.nav[i] || ''; });
+        langIcon.src = t.icon;
+        langText.textContent = t.switchLabel;
+        footerEl.textContent = t.footer;
+
+        document.documentElement.lang = t.htmlLang;
+        document.body.dir = t.dir;
+        current = lang;
+      }
+
+      langBtn.addEventListener('click', function () {
+        updateUI(current === 'ar' ? 'en' : 'ar');
+      });
+
+      updateUI(current);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+   
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.navbar {
+  position: sticky;
+  top: 30px; /* 🔹 هذا السطر يتحكم في رفع/تنزيل الشريط */
+  width: 100%;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  box-sizing: border-box;
+  background: var(--glass-bg);
+  backdrop-filter: blur(64px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 10;
+}
+
+.nav-center ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 150ms, color 150ms;
+}
+
+.nav-center a:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.translate-btn {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.translate-btn img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+#main-logo {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.hero{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 12px;
+  padding: 40px 20px 20px; 
+}
+
+
+#main-image {
+  width: 70%;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+  background: none;
+  box-shadow: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  display: block;
+  margin: 0 auto;
+}
+
+
+.graph-text {
+  font-size: 18px;
+  font-weight: 900; 
+  color: var(--text-dark);
+  line-height: 1.6;
+  max-width: 600px;
+  width: 70%;
+  margin: 12px auto 0;
+  text-align: center;
+}
+
+.graph-title {
+  color: var(--accent-red);
+  font-weight: 800;
+  margin-right: 6px;
+  font-size: 20px;
+}
+
+@media (max-width:600px) {
+  .nav-center ul { gap: 10px; font-size: 14px;}
+  #main-logo { width: 36px; height: 36px; }
+  #main-image { width: 90%; height: auto; } 
+  .graph-text { font-size: 16px; width: 90%; }     
+} 
+</style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Navigation bar">
+  <div class="nav-center">
+    <ul>
+      <li><a href="#" id="link-home">الصفحة الرئيسية</a></li>
+      <li><a href="#" id="link-detect">كشف الاحتيال</a></li>
+      <li><a href="#" id="link-stats">الاحصائات المتداولة</a></li>
+      <li><a href="#" id="link-num">الارقام الرسمية</a></li>
+      <li><a href="#" id="link-about">من نحن</a></li>
+    </ul>
+  </div>
+  <button class="translate-btn" id="translateBtn" aria-pressed="false" title="تبديل اللغة/Toggle language">
+    <img id="lang-icon" src="lang.png" alt="lang icon">
+    <span id="translatlabel" data-en="EN" aria-hidden="true">E</span>
+  </button>
+  <img src="logo Waaie.png" alt="Waeei Logo" id="main-logo">
+</nav> 
+
+<main class="hero" role="main">
+  <img src="Graph.jpg" alt="warning" id="main-image">
+  <p class="graph-text" id="graphText">
+    يمثل هذا الرسم البياني توزيع محاولات الاحتيال حسب النوع
+  </p>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  let current = 'ar';
+  const translations = { 
+    ar: {
+      nav: ['الصفحة الرئيسية','كشف الاحتيال','الاحصائات المتداولة','الارقام الرسمية','من نحن'],
+      graphText: 'يمثل هذا الرسم البياني توزيع محاولات الاحتيال حسب النوع',
+      switchLabel: 'EN',
+      dir: 'rtl',
+      htmlLang: 'ar'
+    },
+    en: {
+      nav: ['Home','Fraud Detection','Statistics','Official Numbers','About Us'],
+      graphText: 'This chart represents the distribution of fraud attempts by type',
+      switchLabel: 'عربي',
+      dir: 'ltr',
+      htmlLang: 'en'
+    }
+  };
+
+  const linkHome   = document.getElementById('link-home');
+  const linkDetect = document.getElementById('link-detect');
+  const linkStats  = document.getElementById('link-stats');
+  const linkNum    = document.getElementById('link-num');
+  const linkAbout  = document.getElementById('link-about');
+
+  const warningText  = document.getElementById('graphText');
+  const translateBtn = document.getElementById('translateBtn');
+  const translateLabel = document.getElementById('translatlabel');
+
+  function updateUI(lang) {
+    const t = translations[lang];
+    linkHome.textContent   = t.nav[0];
+    linkDetect.textContent = t.nav[1];
+    linkStats.textContent  = t.nav[2];
+    linkNum.textContent    = t.nav[3];
+    linkAbout.textContent  = t.nav[4];
+
+    warningText.textContent  = t.graphText;
+    translateLabel.textContent = t.switchLabel;
+
+    document.documentElement.lang = t.htmlLang;
+    document.body.dir = t.dir;
+
+    current = lang;
+  }
+
+  translateBtn.addEventListener('click', function () {
+    updateUI(current === 'ar' ? 'en' : 'ar');
+  });
+
+  updateUI(current);
+});
+</script>
+
+</body>
+</html>
