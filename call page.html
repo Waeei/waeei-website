@@ -8,19 +8,15 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #b7c0c2;
+  background-image: url("Warning interface Background.svg"); 
+  background-repeat: no-repeat;
+  background-size: cover;
   margin: 0;
   padding: 0;
   min-height: 100vh;
   color: #000;
   text-align: center;
-  /*
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-  
-  display: flex;
-  flex-direction: column;*/
+
 }
 
 header {
@@ -90,69 +86,20 @@ header {
 }
 
 
-
-h1 {
-  margin: 20px 5;
-}
-
-.numbers-details {
-  margin: 30px auto 0 auto;
-  max-width: 1200px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-  padding-bottom: 30px;
-}
-.numbers-details .num-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px #e3e3e3;
-  padding: 24px 15px 20px 15px;
-  flex: 1 1 300px;
-  min-width: 250px;
-  max-width: 370px;
-  text-align: center;
-  font-size: 1.1rem;
-  color: #244046;
-  line-height: 1.8;
-}
-.numbers-details .num-card img {
-  height: 42px;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.card img {
-  max-width: 100%;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 10px;
-}
-
-.footer {
-  background: #b7c0c2;
-  padding: 20px;
-  margin-top: 40px;
-  text-align: center;
-  font-size: 14px;
-}
   </style>
 </head>
 <body>
   <header>
         
     <div class="logo">
-        <img src="logo Waaie.png" alt="Waeei Logo">
+        <img src="logo Waeei.png" alt="Waeei Logo">
     </div>
         
     <nav class="menu">
       <div>الصفحة الرئيسية</div>
       <div>كشف الأحتيال</div>
       <div>الأحصائيات المتداولة</div>
-      <div>الأرقام الرسمية</div>
+      <div> الأرقام الرسمية</div>
       <div> من نحن</div>
     </nav>
 
@@ -168,160 +115,103 @@ h1 {
          
   </header>
 
-  <h1>الأرقام الرسمية للإبلاغ عن الاحتيال</h1>
-
-  <div class="numbers-details">
-    <div class="num-card" onclick="goTo('https://www.moi.gov.sa')">
-      <img src="kuluna amn.jpeg" alt="كلنا أمن">
-      <p>تطبيق "كلنا أمن" (وزارة الداخلية)<br>تحميل التطبيق وتقديم بلاغ ضمن قسم الجرائم المعلوماتية</p>
-    </div>
-
-    <div class="num-card" onclick="goTo('https://www.moi.gov.sa')">
-      <img src="public Security.png" alt="الأمن العام">
-      <p>مركز مكافحة الجرائم الإلكترونية (الأمن العام)<br>الرقم: 999<br>الخدمة: تقديم بلاغات عاجلة عن الجرائم الإلكترونية</p>
-    </div>
-
-    <div class="num-card" onclick="goTo('https://www.cst.gov.sa')">
-      <img src="cst.png"alt="هيئة الاتصالات">
-      <p>هيئة الاتصالات والفضاء والتقنية (CST)<br>الرقم: 330330<br>طريقة الإبلاغ: إعادة إرسال الرسالة الاحتيالية إلى الرقم 330330 مجانًا</p>
-    </div>
- 
-   
-    <div class="num-card" onclick="goTo('https://www.absher.sa')">
-      <img src="absher.png" alt="أبشر">
-      <p>منصة أبشر<br>الدخول إلى خدمات الأمن العام، ثم اختيار بلاغ الجرائم الإلكترونية وتعبئة البيانات المطلوبة</p>
-    </div>
-
-    <div class="num-card" onclick="goTo('https://www.cst.gov.sa')">
-      <img src="cst.png" alt="مركز الاتصال الموحد">
-      <p>مركز الاتصال الموحد لهيئة الاتصالات والفضاء والتقنية<br>الرقم: 19996<br>الرد على الاستفسارات وبلاغات الاحتيال المتعلقة بالاتصالات والجرائم المعلوماتية</p>
-    </div>
-   </div>
- 
-
-  <div class="footer">
-    <strong>طرق إضافية للإبلاغ:</strong><br>
-    • البريد الإلكتروني للأمن السيبراني: <a href="mailto:info.cybercrime@moisp.gov.sa">info.cybercrime@moisp.gov.sa</a><br>
-    • منصة "إيجاز": لتقديم شكاوى قانونية متعلقة بالاحتيال الإلكتروني
-  </div>
-
-
-
-
-
+<div style="width: 100%; text-align: center; margin: 20px 0;">
+  <img   id="main-image" src="Warning interface.svg" alt="واجهة الموقع" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
 
 
 
   <script>
-    function goTo(url) {
-  if (!url) return;
-  window.open(url, '_blank', 'noopener,noreferrer');
-}
+  function goTo(url) {
+    if (!url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 
-document.addEventListener('DOMContentLoaded', function () {
-  const cards = Array.from(document.querySelectorAll('.card'));
-  cards.forEach(card => {
-    if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex', '0');
-    const dataUrl = card.getAttribute('data-url');
-    card.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target.tagName.toLowerCase() === 'a') return;
-      if (dataUrl) goTo(dataUrl);
-      else {
-        const onclickAttr = card.getAttribute('onclick');
-        if (onclickAttr) {
-          try {
-            const match = onclickAttr.match(/goTo\(['"](.+?)['"]\)/);
-            if (match && match[1]) goTo(match[1]);
-          } catch (err) {
-            console.warn('Failed to execute onclick fallback', err);
+  document.addEventListener('DOMContentLoaded', function () {
+    const cards = Array.from(document.querySelectorAll('.card'));
+    cards.forEach(card => {
+      if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex', '0');
+      const dataUrl = card.getAttribute('data-url');
+      card.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.tagName.toLowerCase() === 'a') return;
+        if (dataUrl) goTo(dataUrl);
+        else {
+          const onclickAttr = card.getAttribute('onclick');
+          if (onclickAttr) {
+            try {
+              const match = onclickAttr.match(/goTo\(['"](.+?)['"]\)/);
+              if (match && match[1]) goTo(match[1]);
+            } catch (err) {
+              console.warn('Failed to execute onclick fallback', err);
+            }
           }
         }
-      }
-    });
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-        e.preventDefault();
-        card.click();
-      }
-    });
-    card.addEventListener('focus', () => card.classList.add('focused'));
-    card.addEventListener('blur', () => card.classList.remove('focused'));
-  });
-});
-
- document.addEventListener('DOMContentLoaded', function () {
-      let current = 'ar';
-
-      const translations = {
-        ar: {
-          title: `شاك في الرابط الي وصلك ومتردد تفتحه؟
-               لا تشيل هم ،موقعنا واعي جاب لك الحل!  
-               تعال شيك عليه بالذكاء الاصطناعي قبل لا تتهور.
-               "خلك واعي”  ولا تخاطر!`,
-          desc: `واعي الذكي بيكون معك خطوة بخطوة عشان يكشف لك المحتالين،
-            ويحلل الرسائل ،الأرقام،والصور عشان يحميك من أي خداع رقمي.
-           كل هذا مدعوم بأقوى تقنيات الذكاء الاصطناعي، يعني حماية ذكية وعلى أعلى مستوى`,
-          btn1: 'جرب الآن',
-          btn2: 'تواصل معنا',
-          nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصاءات المتداولة','من نحن'],
-          icon: 'lang.png',
-          switchLabel: 'English',
-          footer: '©️ 2025 جميع الحقوق محفوظة لموقع واعي',
-          dir: 'rtl',
-          htmlLang: 'ar'
-        },
-        en: {
-          title: `?Suspicious about a link you received
-             !No worries, Waeei has the solution  
-             .Check it with AI before you take risks
-            !Stay Aware” and don’t gamble with safety"`,
-          desc: `Waeei AI will be with you step by step to detect fraudsters,
-           analyze messages, numbers, and images to protect you from any digital scams.
-           All powered by advanced Artificial Intelligence for maximum smart protection.`,
-          btn1: 'Try Now',
-          btn2: 'Contact Us',
-          nav: ['Home','Fraud Check','Statistics','About'],
-          icon: 'lang.png',
-          switchLabel: 'Arabic',
-          footer: '©️ 2025 All Rights Reserved for Waeei',
-          dir: 'ltr',
-          htmlLang: 'en'
-        }
-      };
-
-      const titleEl = document.getElementById('title');
-      const descEl = document.getElementById('desc');
-      const btn1 = document.getElementById('btn1');
-      const btn2 = document.getElementById('btn2');
-      const langBtn = document.getElementById('lang-switch-btn');
-      const langIcon = document.getElementById('lang-icon');
-      const langText = document.getElementById('lang-text');
-      const navItems = document.querySelectorAll('nav > div');
-      const footerEl = document.getElementById('footer');
-
-      function updateUI(lang) {
-        const t = translations[lang];
-        titleEl.textContent = t.title;
-        descEl.textContent = t.desc;
-        btn1.textContent = t.btn1;
-        btn2.textContent = t.btn2;
-        navItems.forEach((el, i) => { el.textContent = t.nav[i] || ''; });
-        langIcon.src = t.icon;
-        langText.textContent = t.switchLabel;
-        footerEl.textContent = t.footer;
-
-        document.documentElement.lang = t.htmlLang;
-        document.body.dir = t.dir;
-        current = lang;
-      }
-
-      langBtn.addEventListener('click', function () {
-        updateUI(current === 'ar' ? 'en' : 'ar');
       });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+      card.addEventListener('focus', () => card.classList.add('focused'));
+      card.addEventListener('blur', () => card.classList.remove('focused'));
+    });
+  });
 
-      updateUI(current);
-});
-  </script>
+  // 🔹 نظام الترجمة مع تبديل الصورة
+  document.addEventListener('DOMContentLoaded', function () {
+    let current = 'ar';
+
+    const translations = {
+      ar: {
+      
+        nav: ['الصفحة الرئيسية','كشف الاحتيال','الأرقام الرسمية','الإحصاءات المتداولة','من نحن'],
+        icon: 'lang.png',
+        switchLabel: 'English',
+        dir: 'rtl',
+        htmlLang: 'ar',
+        image: 'Warning interface.svg' // 🖼️ الصورة العربية
+      },
+      en: {
+       
+        nav: ['Home','Fraud Check','Official figures','Statistics','About'],
+        icon: 'lang.png',
+        switchLabel: 'Arabic',
+        dir: 'ltr',
+        htmlLang: 'en',
+        image: 'Warning interface EN.svg' // 🖼️ الصورة الإنجليزية
+      }
+    };
+
+
+  
+    const langIcon = document.getElementById('lang-icon');
+    const langText = document.getElementById('lang-text');
+    const navItems = document.querySelectorAll('nav > div');
+    const mainImage = document.getElementById('main-image');
+
+    function updateUI(lang) {
+      
+      navItems.forEach((el, i) => { el.textContent = t.nav[i] || ''; });
+      if (langIcon) langIcon.src = t.icon;
+      if (langText) langText.textContent = t.switchLabel;
+      if (mainImage) mainImage.src = t.image;
+
+      document.documentElement.lang = t.htmlLang;
+      document.body.dir = t.dir;
+      current = lang;
+    }
+
+    langBtn.addEventListener('click', function () {
+      updateUI(current === 'ar' ? 'en' : 'ar');
+    });
+
+    updateUI(current);
+  });
+</script>
 </body>
 </html>
+
+
+
