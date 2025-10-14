@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>الأرقام الرسمية للإبلاغ عن الاحتيال</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url("About us Background.svg"); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: #000;
+  text-align: center;
+
+}
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 15px 40px;
+}
+
+
+
+.logo {
+  margin-left: auto;
+}
+
+
+.menu {
+  display: flex;
+  gap: 60px;
+  margin: 0 auto;
+  justify-content: center;
+
+}
+
+.menu div {
+  position: relative;
+  font-size: 18px;
+  cursor: pointer;
+  padding-bottom: 5px; 
+  }
+
+
+.menu div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007b7f; 
+}
+
+
+.logo img {
+  height: 77px;
+  
+}
+
+.lang-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #007b7f;
+}
+
+.lang-switch img {
+  height: 40px;
+} 
+
+.lang-wrap {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <header>
+        
+    <div class="logo">
+        <img src="logo Waeei.png" alt="Waeei Logo">
+    </div>
+        
+    <nav class="menu">
+      <div>الصفحة الرئيسية</div>
+      <div>كشف الأحتيال</div>
+      <div>الأحصائيات المتداولة</div>
+      <div> الأرقام الرسمية</div>
+      <div> من نحن</div>
+    </nav>
+
+    <div class="lang-wrap" >
+      <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة" >
+      <img id="lang-icon" src="lang.png" alt="lang icon">
+
+      <span id="lang-text">English</span>
+      </button>
+    </div>
+        
+        
+         
+  </header>
+
+<div style="width: 100%; text-align: center; margin: 20px 0;">
+  <img   id="main-image" src="About us.svg" alt="واجهة الموقع" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
+
+
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let current = 'ar';
+
+    const translations = {
+      ar: {
+        nav: ['الصفحة الرئيسية','كشف الاحتيال','الأرقام الرسمية','الإحصاءات المتداولة','من نحن'],
+        icon: 'lang.png',
+        switchLabel: 'English',
+        dir: 'rtl',
+        htmlLang: 'ar',
+        image: 'About us.svg' 
+      },
+      en: {
+        nav: ['Home','Fraud Check','Official Figures','Statistics','About'],
+        icon: 'lang.png',
+        switchLabel: 'Arabic',
+        dir: 'ltr',
+        htmlLang: 'en',
+        image: 'About us EN.svg'
+      }
+    };
+
+    const langBtn = document.getElementById('lang-switch-btn');
+    const langIcon = document.getElementById('lang-icon');
+    const langText = document.getElementById('lang-text');
+    const navItems = document.querySelectorAll('nav > div');
+    const mainImage = document.getElementById('main-image');
+
+    function updateUI(lang) {
+      const t = translations[lang];
+
+    
+      navItems.forEach((el, i) => { el.textContent = t.nav[i] || ''; });
+      if (langIcon) langIcon.src = t.icon;
+      if (langText) langText.textContent = t.switchLabel;
+      if (mainImage) mainImage.src = t.image;
+
+   
+      document.documentElement.lang = t.htmlLang;
+      document.body.dir = t.dir;
+
+     
+      current = lang;
+    }
+
+    langBtn.addEventListener('click', function () {
+      updateUI(current === 'ar' ? 'en' : 'ar');
+    });
+
+    updateUI(current);
+  });
+</script>
+</body>
+</html>
+
