@@ -103,7 +103,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-  /* 🔹 المحتوى */
+  
   .center-content {
     flex: 1;
     display: flex;
@@ -205,65 +205,64 @@
   <div id="result" style="margin-top:16px;font-size:18px;font-weight:600;"></div>
 </div>
 
+
 <script>
 const BACKEND = "http://127.0.0.1:8000/analyze-link";
 
 
-// 🔹 فحص الرابط مع الباك-إند
+function normalizeInput(u){
+  if(!u) return u;
+  const s = u.trim();
+  if(/^https?:\/\//i.test(s)) return s;
+  return "http://" + s;
+}
+
 function isSuspicious(verdict) {
   const v = (verdict || "").toLowerCase();
   return v.includes("malicious") || v.includes("phish") || v.startsWith("error");
 }
 
-document.getElementById("sendBtn").addEventListener("click", async () => {
-  const url = document.getElementById("textbox").value.trim();
+async function analyze(){
+  const resultBox = document.getElementById("result");
+  let url = document.getElementById("textbox").value.trim();
   if (!url) { alert(current === "ar" ? "رجاءً أدخلي رابط للتحقق منه" : "Please enter a link to check"); return; }
+  url = normalizeInput(url);
 
   try {
+    resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
     const res = await fetch(BACKEND, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url })
     });
-
     const data = await res.json();
     const verdict = (data.verdict || data.final_verdict || "").toString();
 
     if (isSuspicious(verdict)) {
-      window.location.href = "warning.html";
+      
+      window.location.href = "./warning.html?u=" + encodeURIComponent(url);
     } else {
-      alert(current === "ar" ? "الرابط آمن ✔" : "The link is safe ✔");
+      resultBox.textContent = current === "ar" ? "الرابط آمن ✔" : "The link is safe ✔";
     }
   } catch (e) {
-    alert(current === "ar" ? "حدث خطأ أثناء الاتصال بالخادم" : "Error connecting to server");
     console.error(e);
+    alert(current === "ar" ? "حدث خطأ أثناء الاتصال بالخادم" : "Error connecting to server");
   }
+}
+
+document.getElementById("sendBtn").addEventListener("click", analyze);
+
+document.getElementById("textbox").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") analyze();
 });
 
 
-// 🔹 نظام الترجمة
 let current = "ar";
-
 const translations = {
-  ar: {
-    nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'],
-    placeholder: 'أدخل الرابط',
-    send: 'إرسال',
-    langBtn: 'English',
-    dir: 'rtl',
-    langCode: 'ar'
-  },
-  en: {
-    nav: ['Home','Fraud Check','Statistics','Official Numbers','About Us'],
-    placeholder: 'Enter the link',
-    send: 'Send',
-    langBtn: 'العربية',
-    dir: 'ltr',
-    langCode: 'en'
-  }
+  ar: { nav:['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'], placeholder:'أدخل الرابط', send:'إرسال', langBtn:'English', dir:'rtl', langCode:'ar' },
+  en: { nav:['Home','Fraud Check','Statistics','Official Numbers','About Us'], placeholder:'Enter the link', send:'Send', langBtn:'العربية', dir:'ltr', langCode:'en' }
 };
 
-// عناصر التبديل
 const langBtn   = document.getElementById("langBtn");
 const langText  = document.getElementById("lang-text");
 const textbox   = document.getElementById("textbox");
@@ -272,42 +271,30 @@ const navLinks  = document.querySelectorAll(".menu a");
 
 function updateLanguage(lang) {
   const t = translations[lang];
-  
-  // القوائم
-  navLinks.forEach((a, i) => {
-    if (t.nav[i]) a.textContent = t.nav[i];
-  });
-
-  // العناصر الأساسية
+  navLinks.forEach((a,i)=>{ if(t.nav[i]) a.textContent = t.nav[i]; });
   textbox.placeholder = t.placeholder;
   sendBtn.textContent = t.send;
   langText.textContent = t.langBtn;
-
-  // اتجاه الصفحة
   document.body.dir = t.dir;
   document.documentElement.lang = t.langCode;
-
   current = lang;
 }
 
-// تبديل اللغة عند الضغط
-langBtn.addEventListener("click", () => {
-  updateLanguage(current === "ar" ? "en" : "ar");
-});
-
-// تشغيل افتراضي عربي
+langBtn.addEventListener("click", ()=>{ updateLanguage(current === "ar" ? "en" : "ar"); });
 updateLanguage("ar");
 </script>
 
 
 
-<!-- سكربتاتك الخارجية كما هي -->
+
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
 <script src="simpleMode.js"></script>
 
 </body>
 </html>
+
+
 
 
 
