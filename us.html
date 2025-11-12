@@ -167,8 +167,7 @@ a {
     let current = 'ar';
 
     const translations = {
-      // رتّبت لك العناصر لتطابق ترتيب الروابط في الـ HTML بالضبط:
-      // [الصفحة الرئيسية, كشف الاحتيال, الإحصاءات المتداولة, الأرقام الرسمية, من نحن]
+     
       ar: {
         nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصاءات المتداولة','الأرقام الرسمية','من نحن'],
         icon: 'lang.png',
@@ -190,13 +189,13 @@ a {
     const langBtn   = document.getElementById('lang-switch-btn');
     const langIcon  = document.getElementById('lang-icon');
     const langText  = document.getElementById('lang-text');
-    const navLinks  = document.querySelectorAll('.menu a');   // 👈 بدّلناها
+    const navLinks  = document.querySelectorAll('.menu a');   
     const mainImage = document.getElementById('main-image');
 
     function updateUI(lang) {
       const t = translations[lang];
 
-      // حدّثي نص كل رابط بدون حذف الوسم <a>
+      
       navLinks.forEach((a, i) => { a.textContent = t.nav[i] || ''; });
 
       if (langIcon)  langIcon.src = t.icon;
@@ -219,6 +218,7 @@ a {
 
 </body>
 </html>
+
 
 
 
