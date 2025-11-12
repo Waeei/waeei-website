@@ -152,8 +152,7 @@ a {
 document.addEventListener('DOMContentLoaded', function () {
   let current = 'ar';
 
-  // لازم يطابق ترتيب الروابط في الهيدر:
-  // [الصفحة الرئيسية, كشف الاحتيال, الإحصائيات المتداولة, الأرقام الرسمية, من نحن]
+  
   const translations = {
     ar: {
       nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'],
@@ -173,29 +172,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-  // ✅ التحديدات الصحيحة
+  
   const langBtn   = document.getElementById('lang-switch-btn');
   const langIcon  = document.getElementById('lang-icon');
   const langText  = document.getElementById('lang-text');
   const mainImage = document.getElementById('main-image');
 
-  // ✅ امسكي الروابط مباشرة بدون IDs
+  
   const navLinks = document.querySelectorAll('.menu a');
 
   function updateUI(lang) {
     const t = translations[lang];
 
-    // حدّث نصوص الروابط حسب ترتيبها
+   
     navLinks.forEach((a, i) => {
       if (t.nav[i]) a.textContent = t.nav[i];
     });
 
-    // بدّلي الأيقونة / نص زر اللغة / الصورة الرئيسية
+    
     if (langIcon)  langIcon.src = t.icon;
     if (langText)  langText.textContent = t.switchLabel;
     if (mainImage) mainImage.src = t.image;
 
-    // اتجاه الصفحة ولغة الـ HTML
+    
     document.documentElement.lang = t.htmlLang;
     document.body.dir = t.dir;
 
@@ -208,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // تهيئة أولية
+ 
   updateUI(current);
 });
 </script>
