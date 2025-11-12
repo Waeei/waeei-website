@@ -16,63 +16,86 @@ body {
 }
 
 
-.navbar {
-  position: sticky;
-  top: 30px; /* 🔹 هذا السطر يتحكم في رفع/تنزيل الشريط */
-  width: 100%;
-  height: var(--navbar-height);
+
+header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  padding: 0 18px;
-  box-sizing: border-box;
-  background: var(--glass-bg);
-  backdrop-filter: blur(64px);
-  border-bottom: 1px solid var(--glass-border);
-  z-index: 10;
+  padding: 15px 40px;
 }
 
-.nav-center ul{
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.menu {
   display: flex;
-  gap: 18px;
-  align-items: center;
+  gap: 80px;
 }
 
-.nav-center a {
-  text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: background 150ms, color 150ms;
+.menu div {
+  position: relative;
+  font-size: 18px;
+  cursor: pointer;
+  padding-bottom: 5px;
+  z-index: 9999;
 }
 
-.nav-center a:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.translate-btn {
+.menu div::after {
+  content: "";
   position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007b7f;
+}
+
+.logo img {
+  height: 77px;
+}
+
+
+.lang-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: transparent;
-  border: 1px solid transparent;
+  color: #007b7f;
 }
 
-.translate-btn img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+.lang-switch img {
+  height: 40px;
+}
+
+
+a {
+  position: relative;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+.menu a {
+  position: relative;
+  color: #124447;            
+  text-decoration: none;      
+  font-weight: bold;
+  padding: 8px 15px;          
+  border-radius: 10px;        
+  transition: all 0.3s ease; 
+}
+
+.menu a:hover {
+  background-color: rgba(0, 123, 127, 0.3); 
+  color: #007b7f;                            
+  transform: translateY(-3px);              
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+.menu a:active {
+  background-color: rgba(0, 123, 127, 0.5);
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #main-logo {
@@ -139,22 +162,37 @@ body {
 </head>
 <body>
 
-<nav class="navbar" role="navigation" aria-label="Navigation bar">
-  <div class="nav-center">
-    <ul>
-      <li><a href="#" id="link-home">الصفحة الرئيسية</a></li>
-      <li><a href="#" id="link-detect">كشف الاحتيال</a></li>
-      <li><a href="#" id="link-stats">الاحصائات المتداولة</a></li>
-      <li><a href="#" id="link-num">الارقام الرسمية</a></li>
-      <li><a href="#" id="link-about">من نحن</a></li>
-    </ul>
+<header>
+  <div class="logo">
+    <img src="logo Waeei.png" alt="Waeei Logo">
   </div>
-  <button class="translate-btn" id="translateBtn" aria-pressed="false" title="تبديل اللغة/Toggle language">
-    <img id="lang-icon" src="lang.png" alt="lang icon">
-    <span id="translatlabel" data-en="EN" aria-hidden="true">E</span>
-  </button>
-  <img src="logo Waaie.png" alt="Waeei Logo" id="main-logo">
-</nav> 
+
+  <nav class="menu">
+    <div data-intro="هذه الصفحة الرئيسية لموقع واعي.">
+      <a href="main page.html" >الصفحة الرئيسية</a>
+    </div>
+    <div data-intro="من هنا يمكنك فحص الرابط المشبوه.">
+      <a href="detection.html"> كشف الأحتيال</a>
+    </div>
+    <div data-intro="قسم الإحصائيات المتداولة.">
+      <a href="graph.html"> الإحصائيات المتداولة</a> 
+    </div>
+    <div data-intro="الأرقام الرسمية للتبليغ عن الاحتيال.">
+      <a href="call page.html">الأرقام الرسمية</a>
+      
+    </div>
+    <div data-intro="تعرف على مشروع واعي وفريقه من هنا.">
+      <a href="us.html"> من نحن</a>
+    </div>
+  </nav>
+
+  <div class="lang-wrap">
+    <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة">
+      <img id="lang-icon" src="lang.png" alt="lang icon">
+      <span id="lang-text">English</span>
+    </button>
+  </div>
+</header>
 
 <main class="hero" role="main">
   <img src="Graph.jpg" alt="warning" id="main-image">
@@ -166,11 +204,14 @@ body {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   let current = 'ar';
+
   const translations = { 
+    // ترتيب العناصر لازم يطابق ترتيب الروابط في الـ HTML:
+    // [الصفحة الرئيسية, كشف الاحتيال, الإحصائيات المتداولة, الأرقام الرسمية, من نحن]
     ar: {
-      nav: ['الصفحة الرئيسية','كشف الاحتيال','الاحصائات المتداولة','الارقام الرسمية','من نحن'],
+      nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'],
       graphText: 'يمثل هذا الرسم البياني توزيع محاولات الاحتيال حسب النوع',
-      switchLabel: 'EN',
+      switchLabel: 'English',
       dir: 'rtl',
       htmlLang: 'ar'
     },
@@ -183,29 +224,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-  const linkHome   = document.getElementById('link-home');
-  const linkDetect = document.getElementById('link-detect');
-  const linkStats  = document.getElementById('link-stats');
-  const linkNum    = document.getElementById('link-num');
-  const linkAbout  = document.getElementById('link-about');
-
-  const warningText  = document.getElementById('graphText');
-  const translateBtn = document.getElementById('translateBtn');
-  const translateLabel = document.getElementById('translatlabel');
+  // بدل IDs: خذي كل الروابط بداخل قائمة .menu
+  const navLinks       = document.querySelectorAll('.menu a');
+  const warningText    = document.getElementById('graphText');
+  const translateBtn   = document.getElementById('lang-switch-btn');
+  const translateLabel = document.getElementById('lang-text');
 
   function updateUI(lang) {
     const t = translations[lang];
-    linkHome.textContent   = t.nav[0];
-    linkDetect.textContent = t.nav[1];
-    linkStats.textContent  = t.nav[2];
-    linkNum.textContent    = t.nav[3];
-    linkAbout.textContent  = t.nav[4];
 
-    warningText.textContent  = t.graphText;
-    translateLabel.textContent = t.switchLabel;
+    // حدّثي نص كل رابط حسب ترتيبه
+    navLinks.forEach((a, i) => {
+      if (t.nav[i]) a.textContent = t.nav[i];
+    });
+
+    warningText.textContent     = t.graphText;
+    translateLabel.textContent  = t.switchLabel;
 
     document.documentElement.lang = t.htmlLang;
-    document.body.dir = t.dir;
+    document.body.dir             = t.dir;
 
     current = lang;
   }
@@ -214,9 +251,13 @@ document.addEventListener('DOMContentLoaded', function () {
     updateUI(current === 'ar' ? 'en' : 'ar');
   });
 
+  // تهيئة أولية
   updateUI(current);
 });
 </script>
 
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<script src="simpleMode.js"></script>
 </body>
 </html>
