@@ -18,6 +18,7 @@
     }
     .card {
       max-width: 700px;
+      width: min(700px, 92vw);
       margin: auto;
       background: #ffffff;
       border-radius: 16px;
@@ -36,6 +37,17 @@
       margin: 12px 0;
       font-size: 14px;
     }
+    .explain{
+        margin:14px auto 0;
+        max-width:700px;
+        background:#fff8e1;
+        border:1px solid #f3d28a;
+        padding:12px 14px;
+        border-radius:10px;
+        line-height:1.7;
+        color:#5a4a12;
+        text-align: center;
+    }
     .actions a {
       display: inline-block;
       margin: 8px;
@@ -53,17 +65,38 @@
     <h1>تحذير ⚠️</h1>
     <p>قد يكون هذا الرابط خبيثًا أو احتياليًا.</p>
     <div id="u" class="url"></div>
-    <p>لا تفتح الرابط أوتدخل أي معلومات شخصية.</p>
+    <div id="x" class="explain">
+    </div>
+
+    <p>لا تفتح الرابط أو تُدخل أي معلومات شخصية.</p>
     <div class="actions">
       <a class="ghost" href="textbox.html">🔙 العودة للتحقق</a>
     </div>
   </div>
 
   <script>
-    const params = new URLSearchParams(location.search);
-    const u = params.get("u") || "";
-    document.getElementById("u").textContent = u || "(لم يتم تحديد رابط)";
-  </script>
+
+  const lastUrl = sessionStorage.getItem("waeei_last_url") || "";
+  const lastExp = sessionStorage.getItem("waeei_last_exp") || "";
+
+
+  const params = new URLSearchParams(location.search);
+  const u = lastUrl || params.get("u") || "";
+
+  document.getElementById("u").textContent = u || "(لم يتم تحديد رابط)";
+
+
+  const xBox = document.getElementById("x");
+  if (lastExp && lastExp.trim().length > 0) {
+    xBox.textContent = lastExp;
+  } else {
+    xBox.textContent = "تنبيه: تم تصنيف هذا الرابط كخبيث اعتمادًا على قواعد ومصادر التحليل. يُنصح بعدم فتحه.";
+  }
+
+ 
+  sessionStorage.removeItem("waeei_last_url");
+  sessionStorage.removeItem("waeei_last_exp");
+</script>
+
 </body>
 </html>
-
