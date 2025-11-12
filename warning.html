@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحذير - رابط مشبوه</title>
+  <style>
+    body {
+       font-family: Arial, sans-serif;
+       background: url("background.jpg") no-repeat center center fixed;
+       background-size: cover;
+       margin: 0;
+       padding: 0;
+       min-height: 100vh; /* تمتد لكامل الشاشة */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+    }
+    .card {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: 25px;
+    }
+    h1 {
+      color: #b00020;
+      margin-bottom: 10px;
+    }
+    .url {
+      word-break: break-all;
+      background: #fde8e8;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    .actions a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .danger { background:#b00020; color:#fff; }
+    .ghost { background:#eee; color:#111; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>تحذير ⚠️</h1>
+    <p>قد يكون هذا الرابط خبيثًا أو احتياليًا.</p>
+    <div id="u" class="url"></div>
+    <p>لا تفتح الرابط أوتدخل أي معلومات شخصية.</p>
+    <div class="actions">
+      <a class="ghost" href="textbox.html">🔙 العودة للتحقق</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const u = params.get("u") || "";
+    document.getElementById("u").textContent = u || "(لم يتم تحديد رابط)";
+  </script>
+</body>
+</html>
