@@ -17,14 +17,10 @@
 
  
   header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 50px;
-    background: transparent;
+    padding: 15px 40px;
   }
 
   .logo img {
@@ -33,9 +29,25 @@
 
   .menu {
     display: flex;
-    gap: 35px;
+    gap: 80px;
+  }
+
+  .menu div {
     position: relative;
     font-size: 18px;
+    cursor: pointer;
+    padding-bottom: 5px;
+    z-index: 9999;
+  }
+
+  .menu div::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #007b7f;
   }
 
   .menu-item {
@@ -45,31 +57,51 @@
     color: #193128;
   }
 
-  .menu-underline {
-    position: absolute;
-    bottom: -6px;
-    height: 3px;
-    background: #007b7f;
-    transition: all .3s ease;
-  }
-
-  
   .lang-btn {
+    background: none;
+    border: none;
     cursor: pointer;
-    padding: 10px 16px;
-    border: 1px solid #fff;
-    background: transparent;
-    color: #fff;
-    border-radius: 6px;
-    font-size: 20px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     gap: 6px;
+    color: #007b7f;
   }
 
+
   .lang-btn img {
-    height: 22px;
+    height: 40px;
   }
+
+  a {
+    position: relative;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
+
+  .menu a {
+    position: relative;
+    color: #124447;            
+    text-decoration: none;      
+    font-weight: bold;
+    padding: 8px 15px;          
+    border-radius: 10px;        
+    transition: all 0.3s ease; 
+  }
+
+.menu a:hover {
+  background-color: rgba(0, 123, 127, 0.3); 
+  color: #007b7f;                            
+  transform: translateY(-3px);              
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+  .menu a:active {
+  background-color: rgba(0, 123, 127, 0.5);
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
   /* 🔹 المحتوى */
   .center-content {
@@ -135,94 +167,144 @@
 
 
 <header>
-  <div class="logo"><img src="logo Waaie.png" alt="Logo"></div>
-
-  <nav class="menu" id="menu">
-    <div class="menu-item active">الصفحة الرئيسية</div>
-    <div class="menu-item">كشف الاحتيال</div>
-    <div class="menu-item">الإحصاءات</div>
-    <div class="menu-item">الأرقام الرسمية</div>
-    <div class="menu-item">من نحن</div>
-    <div class="menu-underline" id="underline"></div>
+  <div class="logo"><img src="logo Waeei.png" alt="logo img"></div>
+  
+  <nav class="menu" id="menu" >
+    <div data-intro="هذه الصفحة الرئيسية لموقع واعي.">
+      <a href="main page.html" >الصفحة الرئيسية</a>
+    </div>
+    <div data-intro="من هنا يمكنك فحص الرابط المشبوه.">
+      <a href="detection.html"> كشف الأحتيال</a>
+    </div>
+    <div data-intro="قسم الإحصائيات المتداولة.">
+      <a href="graph.html"> الإحصائيات المتداولة</a> 
+    </div>
+    <div data-intro="الأرقام الرسمية للتبليغ عن الاحتيال.">
+      <a href="call page.html">الأرقام الرسمية</a>
+      
+    </div>
+    <div data-intro="تعرف على مشروع واعي وفريقه من هنا.">
+      <a href="us.html"> من نحن</a>
+    </div>
   </nav>
 
- 
-  <button id="langBtn" class="lang-btn">
-    <img src="lang.png" alt="lang">
-    <span>English</span>
-  </button>
+  <div class="lang-wrap">
+    <button id="langBtn" class="lang-btn">
+      <img id="lang-icon" src="lang.png" alt="lang icon">
+      <span id="lang-text">English</span>
+    </button>
+  </div>
+  
 </header>
 
 
 <div class="center-content">
-  <img src="logo Waaie.png" alt="Waeei Logo">
+  <img src="logo Waeei.png" alt="Waeei Logo">
   <input type="text" id="textbox" placeholder="أدخل الرابط" class="textbox">
   <button id="sendBtn" class="send-btn">إرسال</button>
+  <div id="result" style="margin-top:16px;font-size:18px;font-weight:600;"></div>
 </div>
 
 <script>
-const menu = document.getElementById("menu");
-const underline = document.getElementById("underline");
-const items = document.querySelectorAll(".menu-item");
-const langBtn = document.getElementById("langBtn");
-const langText = langBtn.querySelector("span");
-const textbox = document.getElementById("textbox");
-const sendBtn = document.getElementById("sendBtn");
+const BACKEND = "http://127.0.0.1:8000/analyze-link";
 
-function moveUnderline(el){
-  const rect = el.getBoundingClientRect();
-  const menuRect = menu.getBoundingClientRect();
-  underline.style.width = rect.width + "px";
-  underline.style.left = (rect.left - menuRect.left) + "px";
+
+// 🔹 فحص الرابط مع الباك-إند
+function isSuspicious(verdict) {
+  const v = (verdict || "").toLowerCase();
+  return v.includes("malicious") || v.includes("phish") || v.startsWith("error");
 }
-items.forEach(item=>{
-  item.addEventListener("click", ()=>{
-    items.forEach(i=>i.classList.remove("active"));
-    item.classList.add("active");
-    moveUnderline(item);
-  });
-});
 
-window.addEventListener("load", ()=> {
-  const active = document.querySelector(".menu-item.active");
-  moveUnderline(active);
-});
+document.getElementById("sendBtn").addEventListener("click", async () => {
+  const url = document.getElementById("textbox").value.trim();
+  if (!url) { alert(current === "ar" ? "رجاءً أدخلي رابط للتحقق منه" : "Please enter a link to check"); return; }
 
-window.addEventListener("resize", ()=>{
-  const active = document.querySelector(".menu-item.active");
-  moveUnderline(active);
-});
+  try {
+    const res = await fetch(BACKEND, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url })
+    });
 
-let current = "ar";
-langBtn.addEventListener("click", ()=>{
-  if(current==="ar"){
-    items[0].textContent="Home";
-    items[1].textContent="Fraud Check";
-    items[2].textContent="Statistics";
-    items[3].textContent="Official Numbers";
-    items[4].textContent="About Us";
-    textbox.placeholder="Enter the link";
-    sendBtn.textContent="Send";
-    langText.textContent="العربية";
-    document.body.dir="ltr";
-    textbox.style.direction="ltr";
-    current="en";
-  } else {
-    items[0].textContent="الصفحة الرئيسية";
-    items[1].textContent="كشف الاحتيال";
-    items[2].textContent="الإحصاءات";
-    items[3].textContent="الأرقام الرسمية";
-    items[4].textContent="من نحن";
-    textbox.placeholder="أدخل الرابط";
-    sendBtn.textContent="إرسال";
-    langText.textContent="English";
-    document.body.dir="rtl";
-    textbox.style.direction="rtl";
-    current="ar";
+    const data = await res.json();
+    const verdict = (data.verdict || data.final_verdict || "").toString();
+
+    if (isSuspicious(verdict)) {
+      window.location.href = "warning.html";
+    } else {
+      alert(current === "ar" ? "الرابط آمن ✔" : "The link is safe ✔");
+    }
+  } catch (e) {
+    alert(current === "ar" ? "حدث خطأ أثناء الاتصال بالخادم" : "Error connecting to server");
+    console.error(e);
   }
-  moveUnderline(document.querySelector(".menu-item.active"));
 });
+
+
+// 🔹 نظام الترجمة
+let current = "ar";
+
+const translations = {
+  ar: {
+    nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'],
+    placeholder: 'أدخل الرابط',
+    send: 'إرسال',
+    langBtn: 'English',
+    dir: 'rtl',
+    langCode: 'ar'
+  },
+  en: {
+    nav: ['Home','Fraud Check','Statistics','Official Numbers','About Us'],
+    placeholder: 'Enter the link',
+    send: 'Send',
+    langBtn: 'العربية',
+    dir: 'ltr',
+    langCode: 'en'
+  }
+};
+
+// عناصر التبديل
+const langBtn   = document.getElementById("langBtn");
+const langText  = document.getElementById("lang-text");
+const textbox   = document.getElementById("textbox");
+const sendBtn   = document.getElementById("sendBtn");
+const navLinks  = document.querySelectorAll(".menu a");
+
+function updateLanguage(lang) {
+  const t = translations[lang];
+  
+  // القوائم
+  navLinks.forEach((a, i) => {
+    if (t.nav[i]) a.textContent = t.nav[i];
+  });
+
+  // العناصر الأساسية
+  textbox.placeholder = t.placeholder;
+  sendBtn.textContent = t.send;
+  langText.textContent = t.langBtn;
+
+  // اتجاه الصفحة
+  document.body.dir = t.dir;
+  document.documentElement.lang = t.langCode;
+
+  current = lang;
+}
+
+// تبديل اللغة عند الضغط
+langBtn.addEventListener("click", () => {
+  updateLanguage(current === "ar" ? "en" : "ar");
+});
+
+// تشغيل افتراضي عربي
+updateLanguage("ar");
 </script>
+
+
+
+<!-- سكربتاتك الخارجية كما هي -->
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<script src="simpleMode.js"></script>
 
 </body>
 </html>
