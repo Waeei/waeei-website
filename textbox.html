@@ -203,12 +203,12 @@
   <input type="text" id="textbox" placeholder="أدخل الرابط" class="textbox">
   <button id="sendBtn" class="send-btn">إرسال</button>
   <div id="result" style="margin-top:16px;font-size:18px;font-weight:600;"></div>
+  <div id="explanation" style="margin-top:10px;font-size:16px;color:#333;text-align:center;"></div>
 </div>
 
 
 <script>
 const BACKEND = "http://127.0.0.1:8000/analyze-link";
-
 
 function normalizeInput(u){
   if(!u) return u;
@@ -224,26 +224,47 @@ function isSuspicious(verdict) {
 
 async function analyze(){
   const resultBox = document.getElementById("result");
+  const expBox    = document.getElementById("explanation");
   let url = document.getElementById("textbox").value.trim();
-  if (!url) { alert(current === "ar" ? "رجاءً أدخلي رابط للتحقق منه" : "Please enter a link to check"); return; }
+
+  if (!url) {
+    alert(current === "ar" ? "رجاءً أدخلي رابط للتحقق منه" : "Please enter a link to check");
+    return;
+  }
   url = normalizeInput(url);
 
   try {
     resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
+    expBox.textContent = ""; 
+
     const res = await fetch(BACKEND, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url })
     });
+
+  
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
+    }
+
     const data = await res.json();
-    const verdict = (data.verdict || data.final_verdict || "").toString();
+    const verdict     = (data.verdict || data.final_verdict || "").toString();
+    const explanation = data.explanation || "";
 
     if (isSuspicious(verdict)) {
-      
-      window.location.href = "./warning.html?u=" + encodeURIComponent(url);
+      sessionStorage.setItem("waeei_last_url", url);          
+      sessionStorage.setItem("waeei_last_exp", explanation);   
+      window.location.href = "./warning.html";  
+      return; 
     } else {
+      
       resultBox.textContent = current === "ar" ? "الرابط آمن ✔" : "The link is safe ✔";
+      expBox.textContent = explanation
+        ? explanation
+        : (current === "ar" ? "لم يتم تقديم شرح إضافي." : "No explanation provided.");
     }
+
   } catch (e) {
     console.error(e);
     alert(current === "ar" ? "حدث خطأ أثناء الاتصال بالخادم" : "Error connecting to server");
@@ -251,10 +272,7 @@ async function analyze(){
 }
 
 document.getElementById("sendBtn").addEventListener("click", analyze);
-
-document.getElementById("textbox").addEventListener("keydown", (e)=>{
-  if(e.key === "Enter") analyze();
-});
+document.getElementById("textbox").addEventListener("keydown", (e)=>{ if(e.key === "Enter") analyze(); });
 
 
 let current = "ar";
@@ -287,23 +305,10 @@ updateLanguage("ar");
 
 
 
+
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
 <script src="simpleMode.js"></script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-           
