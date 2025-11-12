@@ -142,7 +142,7 @@
   }
 
   .feature-box:hover {
-    transform: scale(1.07);     /* تأثير بسيط عند المرور */
+    transform: scale(1.07);    
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   }
   .verify-btn {
@@ -208,10 +208,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // عناصر موجودة فعليًا في صفحتك
-  const navLinks     = document.querySelectorAll('.menu a');        // روابط القائمة
-  const langBtn      = document.getElementById('lang-switch-btn');  // زر اللغة
-  const langTextEl   = document.getElementById('lang-text');        // نص زر اللغة
+  
+  const navLinks     = document.querySelectorAll('.menu a');        
+  const langBtn      = document.getElementById('lang-switch-btn');  
+  const langTextEl   = document.getElementById('lang-text');       
   const copyText     = document.getElementById('copyText');
   const uploadText   = document.getElementById('uploadText');
   const loadingText  = document.getElementById('loadingText');
@@ -219,15 +219,15 @@ document.addEventListener('DOMContentLoaded', function () {
   let current = 'ar';
 
   function setArabic() {
-    // مينو (حسب ترتيب الروابط في HTML)
+    
     const arNav = ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'];
     navLinks.forEach((a, i) => { if (arNav[i]) a.textContent = arNav[i]; });
 
-    // نصوص الصفحة
+  
     if (copyText)   copyText.textContent   = 'انسخ الرسالة للتحقق';
     if (uploadText) uploadText.textContent = 'ارفع لقطة شاشة للمحادثة';
 
-    // زر اللغة + الاتجاه
+   
     if (langTextEl) langTextEl.textContent = 'English';
     document.body.dir = 'rtl';
     document.documentElement.lang = 'ar';
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
     current = 'en';
   }
 
-  // تبديل اللغة
+  
   if (langBtn) {
     langBtn.addEventListener('click', () => {
       if (current === 'ar') setEnglish(); else setArabic();
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  // الوضع الافتراضي عربي
+  
   setArabic();
 });
 </script>
