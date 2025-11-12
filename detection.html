@@ -11,55 +11,94 @@
     background: url("background.jpg") no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
+    overflow: hidden;
   }
 
   header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 50px;
-    background: transparent;
-    box-shadow: none;
+    padding: 15px 40px;
   }
-  .logo img { height: 77px; }
 
   .menu {
     display: flex;
-    gap: 35px;
+    gap: 80px;
+  } 
+
+  .menu div {
     position: relative;
     font-size: 18px;
-  }
-  .menu-item {
     cursor: pointer;
-    padding: 5px 0;
-    white-space: nowrap;
-    color: #193128;
-   
-  }
-  .menu-underline {
-    position: absolute;
-    bottom: -6px;
-    height: 3px;
-    background: #007b7f;
-    transition: all .3s ease;
+    padding-bottom: 5px;
+    z-index: 9999;
   }
 
-  .lang-btn {
+  .menu div::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #007b7f;
+  }
+
+  .logo img {
+    height: 77px;
+  }
+
+  .mainLogo {
+    height: 200px;
+    width: 400px;
+    margin-bottom: 20px;
+  }
+
+  .lang-switch {
+    background: none;
+    border: none;
     cursor: pointer;
-    padding: 10px 16px;
-    border: 1px solid #fff;
-    background: transparent;
-    color: #fff;
-    border-radius: 6px;
-    font-size: 20px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     gap: 6px;
+    color: #007b7f;
   }
-  .lang-btn img { height: 22px; }
+
+  .lang-switch img {
+    height: 40px;
+  }
+
+  a {
+  position: relative;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  }
+
+  .menu a {
+    position: relative;
+    color: #124447;            
+    text-decoration: none;      
+    font-weight: bold;
+    padding: 8px 15px;          
+    border-radius: 10px;        
+    transition: all 0.3s ease; 
+  }
+
+  .menu a:hover {
+    background-color: rgba(0, 123, 127, 0.3); 
+    color: #007b7f;                            
+    transform: translateY(-3px);              
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+
+  .menu a:active {
+    background-color: rgba(0, 123, 127, 0.5);
+    transform: translateY(0px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
 
   #page1 {
     min-height: 100vh;
@@ -73,15 +112,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 80px;
     flex-wrap: wrap;
+    height: 80vh; 
   }
+  
   .feature-box {
     background: linear-gradient(135deg, #9BBFC0 0%, #A9A9A9 100%);
-    border-radius: 15px;
-    padding: 35px;
-    width: 200px;
-    height: 200px;
+    border-radius: 20px;
+    padding: 50px;
+    width: 260px;
+    height: 260px;
     color: #2F4F4F;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
@@ -92,9 +133,17 @@
     font-size: 30px;
     text-align: center;
   }
+
+
+ 
   .feature-box img {
-    height: 70px;
-    margin-bottom: 20px;
+    height: 90px;
+    margin-bottom: 25px;
+  }
+
+  .feature-box:hover {
+    transform: scale(1.07);     /* تأثير بسيط عند المرور */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   }
   .verify-btn {
     padding: 12px 30px;
@@ -106,160 +155,112 @@
     background: linear-gradient(135deg, #6D8B9C, #0E3637);
   }
 
-  #page2 {
-    min-height: 100vh;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 35px;
-    text-align: center;
-    color: #2d4c54;
-  }
-  #page2 img {
-    max-width: 30% ;
-  }
-  .spinner {
-    border: 7px solid #f3f3f3;
-    border-top: 7px solid #0E3637;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  #loadingText {
-    font-size: 30px;
-  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo"><img src="logo Waaie.png" alt="Logo"></div>
+  <div class="logo">
+    <img src="logo Waeei.png" alt="Waeei Logo">
+  </div>
 
-  <nav class="menu" id="menu">
-    <div class="menu-item active">الصفحة الرئيسية</div>
-    <div class="menu-item">كشف الاحتيال</div>
-    <div class="menu-item">الإحصاءات</div>
-    <div class="menu-item">الأرقام الرسمية</div>
-    <div class="menu-item">من نحن</div>
-    <div class="menu-underline" id="underline"></div>
+  <nav class="menu">
+    <div data-intro="هذه الصفحة الرئيسية لموقع واعي.">
+      <a href="main page.html" >الصفحة الرئيسية</a>
+    </div>
+    <div data-intro="من هنا يمكنك فحص الرابط المشبوه.">
+      <a href="detection.html"> كشف الأحتيال</a>
+    </div>
+    <div data-intro="قسم الإحصائيات المتداولة.">
+      <a href="graph.html"> الإحصائيات المتداولة</a> 
+    </div>
+    <div data-intro="الأرقام الرسمية للتبليغ عن الاحتيال.">
+      <a href="call page.html">الأرقام الرسمية</a>
+      
+    </div>
+    <div data-intro="تعرف على مشروع واعي وفريقه من هنا.">
+      <a href="us.html"> من نحن</a>
+    </div>
   </nav>
 
-  <button id="langBtn" class="lang-btn">
-    <img src="lang.png" alt="lang">
-    <span>English</span>
-  </button>
+  <div class="lang-wrap">
+    <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة">
+      <img id="lang-icon" src="lang.png" alt="lang icon">
+      <span id="lang-text">English</span>
+    </button>
+  </div>
 </header>
 
 <div id="page1">
   <div class="content">
-    <div class="feature-box">
-      <img src="link.png" alt="link.png">
-      <div id="copyText" onclick="window.location.href='textbox.html'" style="cursor:pointer;">انسخ الرسالة للتحقق</div>
+    <div class="feature-box" onclick="window.location.href='textbox.html'" style="cursor:pointer;">
+      <img src="link.png" alt="link icon">
+      <div id="copyText">انسخ الرسالة للتحقق</div>
     </div>
+
     <div class="feature-box">
       <img src="imge.png" alt="Upload">
       <div id="uploadText">ارفع لقطة شاشة للمحادثة</div>
     </div>
   </div>
-  <button id="verifyBtn" class="verify-btn">تحقق</button>
-</div>
-
-<div id="page2">
-  <img src="logo Waaie.png" alt="Logo">
-  <img src="loading hand.png" alt="Loading Hand">
-  <div class="spinner"></div>
-  <p id="loadingText">فضلاً انتظر حتى يتم التحقق</p>
+  
 </div>
 
 <script>
-const menu = document.getElementById("menu");
-const underline = document.getElementById("underline");
-const items = document.querySelectorAll(".menu-item");
-const langBtn = document.getElementById("langBtn");
-const langText = langBtn.querySelector("span");
+document.addEventListener('DOMContentLoaded', function () {
+  // عناصر موجودة فعليًا في صفحتك
+  const navLinks     = document.querySelectorAll('.menu a');        // روابط القائمة
+  const langBtn      = document.getElementById('lang-switch-btn');  // زر اللغة
+  const langTextEl   = document.getElementById('lang-text');        // نص زر اللغة
+  const copyText     = document.getElementById('copyText');
+  const uploadText   = document.getElementById('uploadText');
+  const loadingText  = document.getElementById('loadingText');
 
-const copyText = document.getElementById("copyText");
-const uploadText = document.getElementById("uploadText");
-const verifyBtn = document.getElementById("verifyBtn");
-const loadingText = document.getElementById("loadingText");
+  let current = 'ar';
 
-function moveUnderline(el){
-  const rect = el.getBoundingClientRect();
-  const menuRect = menu.getBoundingClientRect();
-  underline.style.width = rect.width + "px";
-  underline.style.left = (rect.left - menuRect.left) + "px";
-}
+  function setArabic() {
+    // مينو (حسب ترتيب الروابط في HTML)
+    const arNav = ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'];
+    navLinks.forEach((a, i) => { if (arNav[i]) a.textContent = arNav[i]; });
 
-items.forEach(item=>{
-  item.addEventListener("click", ()=>{
-    items.forEach(i=>i.classList.remove("active"));
-    item.classList.add("active");
-    moveUnderline(item);
-  });
-});
+    // نصوص الصفحة
+    if (copyText)   copyText.textContent   = 'انسخ الرسالة للتحقق';
+    if (uploadText) uploadText.textContent = 'ارفع لقطة شاشة للمحادثة';
 
-window.addEventListener("load", ()=> {
-  const active = document.querySelector(".menu-item.active");
-  moveUnderline(active);
-});
-
-window.addEventListener("resize", ()=>{
-  const active = document.querySelector(".menu-item.active");
-  moveUnderline(active);
-});
-
-let current = "ar";
-langBtn.addEventListener("click", ()=>{
-  if(current==="ar"){
-    
-    items[0].textContent="Home";
-    items[1].textContent="Fraud Check";
-    items[2].textContent="Statistics";
-    items[3].textContent="Official Numbers";
-    items[4].textContent="About us";
-
-    copyText.textContent="Copy the message to verify";
-    uploadText.textContent="Upload a chat screenshot";
-    verifyBtn.textContent="Verify";
-
-    loadingText.textContent="Please wait for verification";
-
-    langText.textContent="العربية";
-    document.body.dir="ltr";
-    current="en";
-  } else {
-    
-    items[0].textContent="الصفحة الرئيسية";
-    items[1].textContent="كشف الاحتيال";
-    items[2].textContent="الإحصاءات";
-    items[3].textContent="الأرقام الرسمية";
-    items[4].textContent="من نحن";
-
-    copyText.textContent="انسخ الرسالة للتحقق";
-    uploadText.textContent="ارفع لقطة شاشة للمحادثة";
-    verifyBtn.textContent="تحقق";
-
-    loadingText.textContent="فضلاً انتظر حتى يتم التحقق";
-
-    langText.textContent="English";
-    document.body.dir="rtl";
-    current="ar";
+    // زر اللغة + الاتجاه
+    if (langTextEl) langTextEl.textContent = 'English';
+    document.body.dir = 'rtl';
+    document.documentElement.lang = 'ar';
+    current = 'ar';
   }
-  moveUnderline(document.querySelector(".menu-item.active"));
-});
 
-verifyBtn.addEventListener("click", ()=>{
-  document.getElementById("page1").style.display = "none";
-  document.getElementById("page2").style.display = "flex";
+  function setEnglish() {
+    const enNav = ['Home','Fraud Check','Statistics','Official Numbers','About us'];
+    navLinks.forEach((a, i) => { if (enNav[i]) a.textContent = enNav[i]; });
+
+    if (copyText)   copyText.textContent   = 'Copy the message to verify';
+    if (uploadText) uploadText.textContent = 'Upload a chat screenshot';
+    if (langTextEl) langTextEl.textContent = 'العربية';
+    document.body.dir = 'ltr';
+    document.documentElement.lang = 'en';
+    current = 'en';
+  }
+
+  // تبديل اللغة
+  if (langBtn) {
+    langBtn.addEventListener('click', () => {
+      if (current === 'ar') setEnglish(); else setArabic();
+    });
+  }
+
+
+  // الوضع الافتراضي عربي
+  setArabic();
 });
 </script>
 
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<script src="simpleMode.js"></script>
 </body>
 </html>
