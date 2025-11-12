@@ -21,32 +21,23 @@ body {
 
 header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
 }
 
-
-
-.logo {
-  margin-left: auto;
-}
-
-
 .menu {
   display: flex;
-  gap: 60px;
-  margin: 0 auto;
-  justify-content: center;
-
+  gap: 80px;
 }
 
 .menu div {
   position: relative;
   font-size: 18px;
   cursor: pointer;
-  padding-bottom: 5px; 
-  }
-
+  padding-bottom: 5px;
+  z-index: 9999;
+}
 
 .menu div::after {
   content: "";
@@ -55,13 +46,17 @@ header {
   bottom: 0;
   width: 100%;
   height: 2px;
-  background-color: #007b7f; 
+  background-color: #007b7f;
 }
-
 
 .logo img {
   height: 77px;
-  
+}
+
+.mainLogo {
+  height: 200px;
+  width: 400px;
+  margin-bottom: 20px;
 }
 
 .lang-switch {
@@ -77,43 +72,75 @@ header {
 
 .lang-switch img {
   height: 40px;
-} 
+}
 
-.lang-wrap {
-  margin-right: auto;
-  display: flex;
-  align-items: center;
+
+a {
+  position: relative;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+.menu a {
+  position: relative;
+  color: #124447;            
+  text-decoration: none;      
+  font-weight: bold;
+  padding: 8px 15px;          
+  border-radius: 10px;        
+  transition: all 0.3s ease; 
+}
+
+.menu a:hover {
+  background-color: rgba(0, 123, 127, 0.3); 
+  color: #007b7f;                            
+  transform: translateY(-3px);              
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+.menu a:active {
+  background-color: rgba(0, 123, 127, 0.5);
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
   </style>
 </head>
 <body>
-  <header>
-        
-    <div class="logo">
-        <img src="logo Waeei.png" alt="Waeei Logo">
-    </div>
-        
-    <nav class="menu">
-      <div>الصفحة الرئيسية</div>
-      <div>كشف الأحتيال</div>
-      <div>الأحصائيات المتداولة</div>
-      <div> الأرقام الرسمية</div>
-      <div> من نحن</div>
-    </nav>
 
-    <div class="lang-wrap" >
-      <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة" >
+<header>
+  <div class="logo">
+    <img src="logo Waeei.png" alt="Waeei Logo">
+  </div>
+
+  <nav class="menu">
+    <div data-intro="هذه الصفحة الرئيسية لموقع واعي.">
+      <a href="main page.html" >الصفحة الرئيسية</a>
+    </div>
+    <div data-intro="من هنا يمكنك فحص الرابط المشبوه.">
+      <a href="detection.html"> كشف الأحتيال</a>
+    </div>
+    <div data-intro="قسم الإحصائيات المتداولة.">
+      <a href="graph.html"> الإحصائيات المتداولة</a> 
+    </div>
+    <div data-intro="الأرقام الرسمية للتبليغ عن الاحتيال.">
+      <a href="call page.html">الأرقام الرسمية</a>
+      
+    </div>
+    <div data-intro="تعرف على مشروع واعي وفريقه من هنا.">
+      <a href="us.html"> من نحن</a>
+    </div>
+  </nav>
+
+  <div class="lang-wrap">
+    <button id="lang-switch-btn" class="lang-switch" aria-label="تبديل اللغة">
       <img id="lang-icon" src="lang.png" alt="lang icon">
-
       <span id="lang-text">English</span>
-      </button>
-    </div>
-        
-        
-         
-  </header>
+    </button>
+  </div>
+</header>
 
 <div style="width: 100%; text-align: center; margin: 20px 0;">
   <img   id="main-image" src="Warning interface.svg" alt="واجهة الموقع" style="width: 100%; height: auto; border-radius: 10px;">
@@ -121,97 +148,77 @@ header {
 
 
 
-  <script>
-  function goTo(url) {
-    if (!url) return;
-    window.open(url, '_blank', 'noopener,noreferrer');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  let current = 'ar';
+
+  // لازم يطابق ترتيب الروابط في الهيدر:
+  // [الصفحة الرئيسية, كشف الاحتيال, الإحصائيات المتداولة, الأرقام الرسمية, من نحن]
+  const translations = {
+    ar: {
+      nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'],
+      icon: 'lang.png',
+      switchLabel: 'English',
+      dir: 'rtl',
+      htmlLang: 'ar',
+      image: 'Warning interface.svg'
+    },
+    en: {
+      nav: ['Home','Fraud Check','Statistics','Official Numbers','About Us'],
+      icon: 'lang.png',
+      switchLabel: 'Arabic',
+      dir: 'ltr',
+      htmlLang: 'en',
+      image: 'Warning interface EN.svg'
+    }
+  };
+
+  // ✅ التحديدات الصحيحة
+  const langBtn   = document.getElementById('lang-switch-btn');
+  const langIcon  = document.getElementById('lang-icon');
+  const langText  = document.getElementById('lang-text');
+  const mainImage = document.getElementById('main-image');
+
+  // ✅ امسكي الروابط مباشرة بدون IDs
+  const navLinks = document.querySelectorAll('.menu a');
+
+  function updateUI(lang) {
+    const t = translations[lang];
+
+    // حدّث نصوص الروابط حسب ترتيبها
+    navLinks.forEach((a, i) => {
+      if (t.nav[i]) a.textContent = t.nav[i];
+    });
+
+    // بدّلي الأيقونة / نص زر اللغة / الصورة الرئيسية
+    if (langIcon)  langIcon.src = t.icon;
+    if (langText)  langText.textContent = t.switchLabel;
+    if (mainImage) mainImage.src = t.image;
+
+    // اتجاه الصفحة ولغة الـ HTML
+    document.documentElement.lang = t.htmlLang;
+    document.body.dir = t.dir;
+
+    current = lang;
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const cards = Array.from(document.querySelectorAll('.card'));
-    cards.forEach(card => {
-      if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex', '0');
-      const dataUrl = card.getAttribute('data-url');
-      card.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.tagName.toLowerCase() === 'a') return;
-        if (dataUrl) goTo(dataUrl);
-        else {
-          const onclickAttr = card.getAttribute('onclick');
-          if (onclickAttr) {
-            try {
-              const match = onclickAttr.match(/goTo\(['"](.+?)['"]\)/);
-              if (match && match[1]) goTo(match[1]);
-            } catch (err) {
-              console.warn('Failed to execute onclick fallback', err);
-            }
-          }
-        }
-      });
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-          e.preventDefault();
-          card.click();
-        }
-      });
-      card.addEventListener('focus', () => card.classList.add('focused'));
-      card.addEventListener('blur', () => card.classList.remove('focused'));
-    });
-  });
-
-  // 🔹 نظام الترجمة مع تبديل الصورة
-  document.addEventListener('DOMContentLoaded', function () {
-    let current = 'ar';
-
-    const translations = {
-      ar: {
-      
-        nav: ['الصفحة الرئيسية','كشف الاحتيال','الأرقام الرسمية','الإحصاءات المتداولة','من نحن'],
-        icon: 'lang.png',
-        switchLabel: 'English',
-        dir: 'rtl',
-        htmlLang: 'ar',
-        image: 'Warning interface.svg' // 🖼️ الصورة العربية
-      },
-      en: {
-       
-        nav: ['Home','Fraud Check','Official figures','Statistics','About'],
-        icon: 'lang.png',
-        switchLabel: 'Arabic',
-        dir: 'ltr',
-        htmlLang: 'en',
-        image: 'Warning interface EN.svg' // 🖼️ الصورة الإنجليزية
-      }
-    };
-
-
-  
-    const langIcon = document.getElementById('lang-icon');
-    const langText = document.getElementById('lang-text');
-    const navItems = document.querySelectorAll('nav > div');
-    const mainImage = document.getElementById('main-image');
-
-    function updateUI(lang) {
-      
-      navItems.forEach((el, i) => { el.textContent = t.nav[i] || ''; });
-      if (langIcon) langIcon.src = t.icon;
-      if (langText) langText.textContent = t.switchLabel;
-      if (mainImage) mainImage.src = t.image;
-
-      document.documentElement.lang = t.htmlLang;
-      document.body.dir = t.dir;
-      current = lang;
-    }
-
+  if (langBtn) {
     langBtn.addEventListener('click', function () {
       updateUI(current === 'ar' ? 'en' : 'ar');
     });
+  }
 
-    updateUI(current);
-  });
+  // تهيئة أولية
+  updateUI(current);
+});
 </script>
+
 </body>
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<script src="simpleMode.js"></script>
 </html>
+
 
 
 
