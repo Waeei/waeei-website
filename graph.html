@@ -195,7 +195,7 @@ a {
 </header>
 
 <main class="hero" role="main">
-  <img src="Graph.jpg" alt="warning" id="main-image">
+  <img src="graph.png" alt="warning" id="main-image">
   <p class="graph-text" id="graphText">
     يمثل هذا الرسم البياني توزيع محاولات الاحتيال حسب النوع
   </p>
@@ -206,7 +206,8 @@ document.addEventListener('DOMContentLoaded', function () {
   let current = 'ar';
 
   const translations = { 
-   
+    // ترتيب العناصر لازم يطابق ترتيب الروابط في الـ HTML:
+    // [الصفحة الرئيسية, كشف الاحتيال, الإحصائيات المتداولة, الأرقام الرسمية, من نحن]
     ar: {
       nav: ['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'],
       graphText: 'يمثل هذا الرسم البياني توزيع محاولات الاحتيال حسب النوع',
@@ -223,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
-
+  // بدل IDs: خذي كل الروابط بداخل قائمة .menu
   const navLinks       = document.querySelectorAll('.menu a');
   const warningText    = document.getElementById('graphText');
   const translateBtn   = document.getElementById('lang-switch-btn');
@@ -232,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateUI(lang) {
     const t = translations[lang];
 
-   
+    // حدّثي نص كل رابط حسب ترتيبه
     navLinks.forEach((a, i) => {
       if (t.nav[i]) a.textContent = t.nav[i];
     });
@@ -250,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateUI(current === 'ar' ? 'en' : 'ar');
   });
 
-  
+  // تهيئة أولية
   updateUI(current);
 });
 </script>
