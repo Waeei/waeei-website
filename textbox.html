@@ -207,33 +207,62 @@
 </div>
 
 
+
+
 <script>
 
-// رابطَي الباك إند — واحد للنص وواحد للروابط
+// API endpoints
 const API_TEXT = "https://waeei-backend-1.onrender.com/analyze-text";
 const API_LINK = "https://waeei-backend-1.onrender.com/analyze-link";
 
+// كشف الرابط بشكل صحيح جداً
 function isURL(input) {
-  const pattern = /^(http|https):\/\/|\.com|\.sa|\.net|\.org|www\./i;  
-  return pattern.test(input);
+  try {
+    new URL(input);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// استخراج الرابط الحقيقي من النصوص الاحتيالية
+function extractURL(text) {
+  const regex = /(https?:\/\/[^\s]+)/g;
+  const found = text.match(regex);
+  return found ? found[0] : null;
 }
 
 async function analyze() {
   const resultBox = document.getElementById("result");
-  const expBox    = document.getElementById("explanation");
+  const expBox = document.getElementById("explanation");
   let input = document.getElementById("textbox").value.trim();
 
   if (!input) {
-    alert(current === "ar" ? "رجاءً أدخلي رابط أو نص" : "Please enter text or a link");
+    alert(current === "ar" ? "رجاءً أدخل رابط أو نص للتحقق" : "Please enter text or link");
     return;
   }
 
   resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
   expBox.textContent = "";
 
-  // يحدد تلقائيًا هل المدخل رابط ولا نص
-  let endpoint = isURL(input) ? API_LINK : API_TEXT;
-  let body = isURL(input) ? { url: input } : { text: input };
+  let endpoint = "";
+  let body = {};
+
+  // 1 — إذا كان نص متعدد الأسطر → analyze-text
+  if (!isURL(input)) {
+    const extracted = extractURL(input); // لو فيه رابط داخل النص
+    if (extracted) {
+      endpoint = API_LINK;
+      body = { url: extracted };
+    } else {
+      endpoint = API_TEXT;
+      body = { text: input };
+    }
+  } 
+  else {
+    endpoint = API_LINK;
+    body = { url: input };
+  }
 
   try {
     const res = await fetch(endpoint, {
@@ -245,47 +274,49 @@ async function analyze() {
     if (!res.ok) throw new Error("HTTP " + res.status);
 
     const data = await res.json();
-    const verdict     = (data.verdict || data.final_verdict || "").toLowerCase();
+    const verdict = (data.verdict || data.final_verdict || "").toLowerCase();
     const explanation = data.explanation || "";
 
+    // ⚠️ التحذير
     if (verdict.includes("malicious") || verdict.includes("phish")) {
-      // ينقلك لصفحة التحذير
       sessionStorage.setItem("waeei_last_url", input);
       sessionStorage.setItem("waeei_last_exp", explanation);
       window.location.href = "./warning.html";
       return;
     }
 
-    // لو آمن
+    // ✔️ آمن
     resultBox.textContent = current === "ar" ? "✔ آمن" : "✔ Safe";
-    expBox.textContent = explanation || (current === "ar"
-      ? "لا يوجد شرح إضافي."
-      : "No explanation provided.");
+    expBox.textContent = explanation || (current === "ar" ? "لا يوجد شرح إضافي." : "No explanation provided.");
 
-  } catch (e) {
-    console.error(e);
-    alert(current === "ar" ? "حدث خطأ أثناء الاتصال بالخادم" : "Error connecting to server");
+  } catch (err) {
+    console.error(err);
+    alert(current === "ar" ? "خطأ في الاتصال بالخادم" : "Server connection error");
   }
 }
 
+
+// زر الإرسال
 document.getElementById("sendBtn").addEventListener("click", analyze);
+
+// عند الضغط Enter
 document.getElementById("textbox").addEventListener("keydown", (e) => {
   if (e.key === "Enter") analyze();
 });
 
 
-// لغة الموقع كما كانت
+// 🔄 نظام اللغة كما هو
 let current = "ar";
 const translations = {
   ar: { nav:['الصفحة الرئيسية','كشف الاحتيال','مؤشرات رقمية','احم نفسك وبلغ!','من نحن'], placeholder:'أدخل الرابط أو النص', send:'إرسال', langBtn:'English', dir:'rtl', langCode:'ar' },
-  en: { nav:['Home','Fraud Check','Digital indicators','Protect yourself and report !','About Us'], placeholder:'Enter link or text', send:'Send', langBtn:'العربية', dir:'ltr', langCode:'en' }
+  en: { nav:['Home','Fraud Check','Digital indicators','Protect yourself and report!','About Us'], placeholder:'Enter link or text', send:'Send', langBtn:'العربية', dir:'ltr', langCode:'en' }
 };
 
-const langBtn   = document.getElementById("langBtn");
-const langText  = document.getElementById("lang-text");
-const textbox   = document.getElementById("textbox");
-const sendBtn   = document.getElementById("sendBtn");
-const navLinks  = document.querySelectorAll(".menu a");
+const langBtn = document.getElementById("langBtn");
+const langText = document.getElementById("lang-text");
+const textbox = document.getElementById("textbox");
+const sendBtn = document.getElementById("sendBtn");
+const navLinks = document.querySelectorAll(".menu a");
 
 function updateLanguage(lang) {
   const t = translations[lang];
@@ -298,10 +329,14 @@ function updateLanguage(lang) {
   current = lang;
 }
 
-langBtn.addEventListener("click", ()=>{ updateLanguage(current === "ar" ? "en" : "ar"); });
+langBtn.addEventListener("click", ()=>{ 
+  updateLanguage(current === "ar" ? "en" : "ar"); 
+});
 updateLanguage("ar");
 
 </script>
+
+
 
   
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
