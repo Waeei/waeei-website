@@ -208,63 +208,59 @@
 
 
 <script>
-const BACKEND = "https://waeei-backend-1.onrender.com/analyze-link";
 
+// رابطَي الباك إند — واحد للنص وواحد للروابط
+const API_TEXT = "https://waeei-backend-1.onrender.com/analyze-text";
+const API_LINK = "https://waeei-backend-1.onrender.com/analyze-link";
 
-function normalizeInput(u){
-  if(!u) return u;
-  const s = u.trim();
-  if(/^https?:\/\//i.test(s)) return s;
-  return "http://" + s;
+function isURL(input) {
+  const pattern = /^(http|https):\/\/|\.com|\.sa|\.net|\.org|www\./i;  
+  return pattern.test(input);
 }
 
-function isSuspicious(verdict) {
-  const v = (verdict || "").toLowerCase();
-  return v.includes("malicious") || v.includes("phish") || v.startsWith("error");
-}
-
-async function analyze(){
+async function analyze() {
   const resultBox = document.getElementById("result");
   const expBox    = document.getElementById("explanation");
-  let url = document.getElementById("textbox").value.trim();
+  let input = document.getElementById("textbox").value.trim();
 
-  if (!url) {
-    alert(current === "ar" ? "رجاءً أدخلي رابط للتحقق منه" : "Please enter a link to check");
+  if (!input) {
+    alert(current === "ar" ? "رجاءً أدخلي رابط أو نص" : "Please enter text or a link");
     return;
   }
-  url = normalizeInput(url);
+
+  resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
+  expBox.textContent = "";
+
+  // يحدد تلقائيًا هل المدخل رابط ولا نص
+  let endpoint = isURL(input) ? API_LINK : API_TEXT;
+  let body = isURL(input) ? { url: input } : { text: input };
 
   try {
-    resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
-    expBox.textContent = ""; 
-
-    const res = await fetch(BACKEND, {
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url })
+      body: JSON.stringify(body)
     });
 
-  
-    if (!res.ok) {
-      throw new Error("HTTP " + res.status);
-    }
+    if (!res.ok) throw new Error("HTTP " + res.status);
 
     const data = await res.json();
-    const verdict     = (data.verdict || data.final_verdict || "").toString();
+    const verdict     = (data.verdict || data.final_verdict || "").toLowerCase();
     const explanation = data.explanation || "";
 
-    if (isSuspicious(verdict)) {
-      sessionStorage.setItem("waeei_last_url", url);          
-      sessionStorage.setItem("waeei_last_exp", explanation);   
-      window.location.href = "./warning.html";  
-      return; 
-    } else {
-      
-      resultBox.textContent = current === "ar" ? "الرابط آمن ✔" : "The link is safe ✔";
-      expBox.textContent = explanation
-        ? explanation
-        : (current === "ar" ? "لم يتم تقديم شرح إضافي." : "No explanation provided.");
+    if (verdict.includes("malicious") || verdict.includes("phish")) {
+      // ينقلك لصفحة التحذير
+      sessionStorage.setItem("waeei_last_url", input);
+      sessionStorage.setItem("waeei_last_exp", explanation);
+      window.location.href = "./warning.html";
+      return;
     }
+
+    // لو آمن
+    resultBox.textContent = current === "ar" ? "✔ آمن" : "✔ Safe";
+    expBox.textContent = explanation || (current === "ar"
+      ? "لا يوجد شرح إضافي."
+      : "No explanation provided.");
 
   } catch (e) {
     console.error(e);
@@ -273,13 +269,16 @@ async function analyze(){
 }
 
 document.getElementById("sendBtn").addEventListener("click", analyze);
-document.getElementById("textbox").addEventListener("keydown", (e)=>{ if(e.key === "Enter") analyze(); });
+document.getElementById("textbox").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") analyze();
+});
 
 
+// لغة الموقع كما كانت
 let current = "ar";
 const translations = {
-  ar: { nav:['الصفحة الرئيسية','كشف الاحتيال','مؤشرات رقمية','احم نفسك وبلغ!','من نحن'], placeholder:'أدخل الرابط', send:'إرسال', langBtn:'English', dir:'rtl', langCode:'ar' },
-  en: { nav:['Home','Fraud Check','Digital indicators','Protect yourself and report !','About Us'], placeholder:'Enter the link', send:'Send', langBtn:'العربية', dir:'ltr', langCode:'en' }
+  ar: { nav:['الصفحة الرئيسية','كشف الاحتيال','مؤشرات رقمية','احم نفسك وبلغ!','من نحن'], placeholder:'أدخل الرابط أو النص', send:'إرسال', langBtn:'English', dir:'rtl', langCode:'ar' },
+  en: { nav:['Home','Fraud Check','Digital indicators','Protect yourself and report !','About Us'], placeholder:'Enter link or text', send:'Send', langBtn:'العربية', dir:'ltr', langCode:'en' }
 };
 
 const langBtn   = document.getElementById("langBtn");
@@ -301,15 +300,8 @@ function updateLanguage(lang) {
 
 langBtn.addEventListener("click", ()=>{ updateLanguage(current === "ar" ? "en" : "ar"); });
 updateLanguage("ar");
+
 </script>
-
-
-
-
-
-<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
-<script src="simpleMode.js"></script>
 
 </body>
 </html>
