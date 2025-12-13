@@ -1,0 +1,41 @@
+@media (max-width: 768px) {
+  header {
+    padding: 10px 15px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .menu {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo img {
+    height: 55px;
+  }
+
+  .textbox {
+    width: 90%;
+    font-size: 16px;
+  }
+
+  .center-content img {
+    height: 90px;
+  }
+
+  .send-btn {
+    width: 60%;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .menu {
+    gap: 40px;
+  }
+
+  .textbox {
+    width: 70%;
+  }
+}
