@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> الرابط امن</title>
+  <style>
+    body {
+       font-family: Arial, sans-serif;
+       background: url("background.jpg") no-repeat center center fixed;
+       background-size: cover;
+       margin: 0;
+       padding: 0;
+       min-height: 100vh; 
+       display: flex;
+       justify-content: center;
+       align-items: center;
+    }
+ 
+    .card {
+      max-width: 700px;
+      width: min(700px, 92vw);
+      margin: auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: 25px;
+    }
+    h1 {
+      color: #055429;
+      margin-bottom: 10px;
+    }
+    .url {
+      word-break: break-all;
+      background: #e8fdf6;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    .explain{
+        margin:14px auto 0;
+        max-width:700px;
+        background:#abf1e8;
+        border:1px solid #8af3c9;
+        padding:12px 14px;
+        border-radius:10px;
+        line-height:1.7;
+        color:#1d6873;
+        text-align: center;
+    }
+    .actions a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .danger { background:#00b04f; color:#fff; }
+    .ghost { background:#eee; color:#111; }
+  </style>
+</head>
+<body>
+     
+  <div class="card">
+    <img class="safe" src="safe.png" alt="Waeei Logo" style=" height: 60px;  margin-bottom: 20px;">
+    <h1>آمن</h1>
+    <p> هذا الرابط آمن يمكنك تصفحه بس خلك واعي .</p>
+    <div id="u" class="url"></div>
+    <div id="x" class="explain">
+    </div>
+
+    <div class="actions">
+      <a class="ghost" href="textbox.html">🔙 العودة للتحقق</a>
+      <a class="ghost" href="main page.html">🔙 العودة للصفحة الرئيسية </a>
+    </div>
+  </div>
+
+  <script>
+
+  const lastUrl = sessionStorage.getItem("waeei_last_url") || "";
+  const lastExp = sessionStorage.getItem("waeei_last_exp") || "";
+
+
+  const params = new URLSearchParams(location.search);
+  const u = lastUrl || params.get("u") || "";
+
+  document.getElementById("u").textContent = u || "(لم يتم تحديد رابط)";
+
+
+  const xBox = document.getElementById("x");
+  if (lastExp && lastExp.trim().length > 0) {
+    xBox.textContent = lastExp;
+  } else {
+    xBox.textContent = " تم تصنيف هذا الرابط آمن اعتمادًا على قواعد ومصادر التحليل. يمكنك تصفحه بس خلك واعي  .";
+  }
+
+ 
+  sessionStorage.removeItem("waeei_last_url");
+  sessionStorage.removeItem("waeei_last_exp");
+</script>
+
+</body>
+</html>
