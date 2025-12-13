@@ -36,6 +36,14 @@
     font-size: 17px;
     padding: 10px 25px;
   }
+
+
+  .feature-box {
+    width: 75%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+  }
 }
 
 
@@ -85,4 +93,12 @@
     width: 100%;
     font-size: 16px;
   }
+
+  .feature-box {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
 }
+
