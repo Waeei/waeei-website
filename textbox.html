@@ -176,11 +176,11 @@
     <div data-intro="من هنا يمكنك فحص الرابط المشبوه.">
       <a href="detection.html"> كشف الأحتيال</a>
     </div>
-    <div data-intro="قسم المؤشرات الرقمية.">
-      <a href="graph.html">مؤشرات رقمية</a> 
+    <div data-intro="قسم الإحصائيات المتداولة.">
+      <a href="graph.html"> الإحصائيات المتداولة</a> 
     </div>
     <div data-intro="الأرقام الرسمية للتبليغ عن الاحتيال.">
-      <a href="call page.html">احم نفسك وبلغ!</a>
+      <a href="call page.html">الأرقام الرسمية</a>
       
     </div>
     <div data-intro="تعرف على مشروع واعي وفريقه من هنا.">
@@ -206,117 +206,97 @@
   <div id="explanation" style="margin-top:10px;font-size:16px;color:#333;text-align:center;"></div>
 </div>
 
-
-
-
 <script>
+const BACKEND = "https://waeei-backend.onrender.com/analyze-link";
 
-// API endpoints
-const API_TEXT = "https://waeei-backend-1.onrender.com/analyze-text";
-const API_LINK = "https://waeei-backend-1.onrender.com/analyze-link";
-
-// كشف الرابط بشكل صحيح جداً
-function isURL(input) {
-  try {
-    new URL(input);
-    return true;
-  } catch (e) {
-    return false;
-  }
+function normalizeInput(u){
+  if(!u) return u;
+  const s = u.trim();
+  if(/^https?:\/\//i.test(s)) return s;
+  return "http://" + s;
 }
 
-// استخراج الرابط الحقيقي من النصوص الاحتيالية
-function extractURL(text) {
-  const regex = /(https?:\/\/[^\s]+)/g;
-  const found = text.match(regex);
-  return found ? found[0] : null;
+function isSuspicious(verdict) {
+  const v = (verdict || "").toLowerCase();
+  return v.includes("malicious") || v.includes("phish") || v.startsWith("error");
 }
 
-async function analyze() {
+async function analyze(){
   const resultBox = document.getElementById("result");
-  const expBox = document.getElementById("explanation");
-  let input = document.getElementById("textbox").value.trim();
+  const expBox    = document.getElementById("explanation");
+  let url = document.getElementById("textbox").value.trim();
 
-  if (!input) {
-    alert(current === "ar" ? "رجاءً أدخل رابط أو نص للتحقق" : "Please enter text or link");
+  if (!url) {
+    alert(current === "ar" ? "رجاءً أدخلي رابط للتحقق منه" : "Please enter a link to check");
     return;
   }
 
-  resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
-  expBox.textContent = "";
-
-  let endpoint = "";
-  let body = {};
-
-  // 1 — إذا كان نص متعدد الأسطر → analyze-text
-  if (!isURL(input)) {
-    const extracted = extractURL(input); // لو فيه رابط داخل النص
-    if (extracted) {
-      endpoint = API_LINK;
-      body = { url: extracted };
-    } else {
-      endpoint = API_TEXT;
-      body = { text: input };
-    }
-  } 
-  else {
-    endpoint = API_LINK;
-    body = { url: input };
-  }
+  url = normalizeInput(url);
 
   try {
-    const res = await fetch(endpoint, {
+    resultBox.textContent = current === "ar" ? "جارٍ التحقق..." : "Checking...";
+    expBox.textContent = "";
+
+    const res = await fetch(BACKEND, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ url })
     });
 
-    if (!res.ok) throw new Error("HTTP " + res.status);
-
-    const data = await res.json();
-    const verdict = (data.verdict || data.final_verdict || "").toLowerCase();
-    const explanation = data.explanation || "";
-
-    // ⚠️ التحذير
-    if (verdict.includes("malicious") || verdict.includes("phish")) {
-      sessionStorage.setItem("waeei_last_url", input);
-      sessionStorage.setItem("waeei_last_exp", explanation);
-      window.location.href = "./warning.html";
-      return;
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
     }
 
-    // ✔️ آمن
-    resultBox.textContent = current === "ar" ? "✔ آمن" : "✔ Safe";
-    expBox.textContent = explanation || (current === "ar" ? "لا يوجد شرح إضافي." : "No explanation provided.");
+    const data = await res.json();
+    const verdict     = (data.verdict || data.final_verdict || "").toString();
+    const explanation = data.explanation || 
+      (current === "ar" ? "لم يتم تقديم شرح إضافي." : "No explanation provided.");
 
-  } catch (err) {
-    console.error(err);
-    alert(current === "ar" ? "خطأ في الاتصال بالخادم" : "Server connection error");
+    sessionStorage.setItem("waeei_last_url", url);
+    sessionStorage.setItem("waeei_last_exp", explanation);
+
+    if (isSuspicious(verdict)) {
+      window.location.href = "./warning.html";
+    } else {
+      window.location.href = "./safe.html";
+    }
+
+  } catch (e) {
+    console.error(e);
+    alert(current === "ar" ? "حدث خطأ أثناء الاتصال بالخادم" : "Error connecting to server");
   }
 }
 
-
-// زر الإرسال
 document.getElementById("sendBtn").addEventListener("click", analyze);
-
-// عند الضغط Enter
-document.getElementById("textbox").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") analyze();
+document.getElementById("textbox").addEventListener("keydown", (e)=>{ 
+  if(e.key === "Enter") analyze(); 
 });
 
-
-// 🔄 نظام اللغة كما هو
 let current = "ar";
 const translations = {
-  ar: { nav:['الصفحة الرئيسية','كشف الاحتيال','مؤشرات رقمية','احم نفسك وبلغ!','من نحن'], placeholder:'أدخل الرابط أو النص', send:'إرسال', langBtn:'English', dir:'rtl', langCode:'ar' },
-  en: { nav:['Home','Fraud Check','Digital indicators','Protect yourself and report!','About Us'], placeholder:'Enter link or text', send:'Send', langBtn:'العربية', dir:'ltr', langCode:'en' }
+  ar: { 
+    nav:['الصفحة الرئيسية','كشف الاحتيال','الإحصائيات المتداولة','الأرقام الرسمية','من نحن'], 
+    placeholder:'أدخل الرابط', 
+    send:'إرسال', 
+    langBtn:'English', 
+    dir:'rtl', 
+    langCode:'ar' 
+  },
+  en: { 
+    nav:['Home','Fraud Check','Statistics','Official Numbers','About Us'], 
+    placeholder:'Enter the link', 
+    send:'Send', 
+    langBtn:'العربية', 
+    dir:'ltr', 
+    langCode:'en' 
+  }
 };
 
-const langBtn = document.getElementById("langBtn");
-const langText = document.getElementById("lang-text");
-const textbox = document.getElementById("textbox");
-const sendBtn = document.getElementById("sendBtn");
-const navLinks = document.querySelectorAll(".menu a");
+const langBtn   = document.getElementById("langBtn");
+const langText  = document.getElementById("lang-text");
+const textbox   = document.getElementById("textbox");
+const sendBtn   = document.getElementById("sendBtn");
+const navLinks  = document.querySelectorAll(".menu a");
 
 function updateLanguage(lang) {
   const t = translations[lang];
@@ -332,16 +312,28 @@ function updateLanguage(lang) {
 langBtn.addEventListener("click", ()=>{ 
   updateLanguage(current === "ar" ? "en" : "ar"); 
 });
-updateLanguage("ar");
 
+updateLanguage("ar");
 </script>
 
 
 
-  
+
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
 <script src="simpleMode.js"></script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+  
+
+
+
+           
