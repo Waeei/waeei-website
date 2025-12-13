@@ -1,32 +1,40 @@
-@media (max-width: 768px) {
+
+
+/* ===== iPad Fix ===== */
+@media (min-width: 768px) and (max-width: 1024px) {
+
   header {
-    padding: 10px 15px;
-    flex-direction: column;
-    gap: 10px;
+    padding: 10px 25px;
   }
 
   .menu {
-    gap: 20px;
+    gap: 30px;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .logo img {
-    height: 55px;
+  .menu a {
+    font-size: 16px;
+    padding: 6px 10px;
   }
 
-  .textbox {
-    width: 90%;
-    font-size: 16px;
+  .center-content {
+    margin-top: 40px;
+    gap: 20px;
   }
 
   .center-content img {
-    height: 90px;
+    height: 100px;
+  }
+
+  .textbox {
+    width: 75%;
+    font-size: 18px;
   }
 
   .send-btn {
-    width: 60%;
-    font-size: 16px;
+    font-size: 17px;
+    padding: 10px 25px;
   }
 }
 
@@ -38,4 +46,5 @@
   .textbox {
     width: 70%;
   }
+
 }
